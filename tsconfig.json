@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "outDir": "./dist",
+      "rootDir": "./",
+      "target": "ES6",
+      "module": "ESNext",
+      "lib": ["ESNext"],  
+      "sourceMap": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "strict": true
+    },
+    "include": ["app/**/*.ts", "server.ts"],
+    "exclude": ["node_modules", "dist"]
+  }
