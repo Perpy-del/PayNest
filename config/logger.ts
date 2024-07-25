@@ -19,7 +19,7 @@ const generator = () => {
 
 const rotatingFileStream: rfs.RotatingFileStream = rfs.createStream(generator, {
   interval: '1d', // rotate daily
-  path: path.join(__dirname, '../storage/logs'),
+  path: path.join(__dirname, './storage/logs'),
 });
 
 export default rotatingFileStream;
