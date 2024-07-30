@@ -14,7 +14,7 @@ const generator = () => {
   const month: number = pad(time.getMonth() + 1);
   const day: number = pad(time.getDate());
 
-  return `uptick-${year}-${month}-${day}.log`;
+  return `paynest-${year}-${month}-${day}.log`;
 };
 
 const rotatingFileStream: rfs.RotatingFileStream = rfs.createStream(generator, {
