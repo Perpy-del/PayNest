@@ -2,9 +2,6 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import rotatingFileStream from '../config/logger.js';
-import { getPgVersion } from '../config/db.js';
-
-getPgVersion();
 
 const app = express();
 
