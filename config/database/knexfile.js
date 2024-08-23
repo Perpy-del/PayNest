@@ -9,9 +9,9 @@ const config = {
   development: {
     client: process.env.DEV_DB_CLIENT || 'postgresql',
     connection: {
-      database: "postgres",
-      user: "postgres",
-      password: 'Secret321@'
+      database: process.env.DEV_DB_NAME,
+      user: process.env.DEV_DB_USER,
+      password: process.env.DEV_DB_PASSWORD
     },
     pool: {
       min: 2,
