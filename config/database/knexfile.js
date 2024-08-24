@@ -7,11 +7,11 @@ dotenv.config();
  */
 const config = {
   development: {
-    client: process.env.DEV_DB_CLIENT || 'postgresql',
+    client: process.env.DEV_DB_CLIENT,
     connection: {
-      database: process.env.DEV_DB_NAME || "postgres",
-      user: process.env.DEV_DB_USER || "postgres",
-      password: process.env.DEV_DB_PASSWORD || "Secret321@"
+      database: process.env.DEV_DB_NAME,
+      user: process.env.DEV_DB_USER,
+      password: process.env.DEV_DB_PASSWORD
     },
     pool: {
       min: 2,
