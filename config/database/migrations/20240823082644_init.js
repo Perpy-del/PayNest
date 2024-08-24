@@ -6,8 +6,8 @@ export async function up(knex) {
   return knex.schema.createTable('users', table => {
     table.uuid('id').primary();
     table.enu('status', ['active', 'inactive']).defaultTo('inactive');
-    table.string('username, 50').notNullable();
-    table.string('email, 50').notNullable();
+    table.string('username, 50').notNullable().unique();
+    table.string('email, 50').notNullable().unique();
     table.string('password, 50').notNullable();
     table.string('first_name, 50');
     table.string('last_name, 50');

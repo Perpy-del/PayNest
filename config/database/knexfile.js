@@ -9,9 +9,9 @@ const config = {
   development: {
     client: process.env.DEV_DB_CLIENT || 'postgresql',
     connection: {
-      database: process.env.DEV_DB_NAME,
-      user: process.env.DEV_DB_USER,
-      password: process.env.DEV_DB_PASSWORD
+      database: process.env.DEV_DB_NAME || "postgres",
+      user: process.env.DEV_DB_USER || "postgres",
+      password: process.env.DEV_DB_PASSWORD || "Secret321@"
     },
     pool: {
       min: 2,
@@ -22,11 +22,11 @@ const config = {
     },
   },
   staging: {
-    client: process.env.STAGING_DB_CLIENT,
+    client: process.env.STAGING_DB_CLIENT || "",
     connection: {
-      database: process.env.STAGING_DB_NAME,
-      user: process.env.STAGING_DB_USER,
-      password: process.env.STAGING_DB_PASS
+      database: process.env.STAGING_DB_NAME || "",
+      user: process.env.STAGING_DB_USER || "",
+      password: process.env.STAGING_DB_PASS || ""
     },
     pool: {
       min: 2,
