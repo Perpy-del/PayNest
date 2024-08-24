@@ -7,7 +7,7 @@ dotenv.config();
  */
 const config = {
   development: {
-    client: process.env.DEV_DB_CLIENT || 'postgresql',
+    client: process.env.DEV_DB_CLIENT,
     connection: {
       database: process.env.DEV_DB_NAME,
       user: process.env.DEV_DB_USER,
@@ -22,11 +22,11 @@ const config = {
     },
   },
   staging: {
-    client: process.env.STAGING_DB_CLIENT,
+    client: process.env.STAGING_DB_CLIENT || "",
     connection: {
-      database: process.env.STAGING_DB_NAME,
-      user: process.env.STAGING_DB_USER,
-      password: process.env.STAGING_DB_PASS
+      database: process.env.STAGING_DB_NAME || "",
+      user: process.env.STAGING_DB_USER || "",
+      password: process.env.STAGING_DB_PASS || ""
     },
     pool: {
       min: 2,
