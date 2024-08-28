@@ -35,6 +35,5 @@ async function authenticateUser(request: Request, response: Response, next: Next
 
   next();
 }
-}
 
 export default authenticateUser;
