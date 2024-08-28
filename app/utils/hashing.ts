@@ -14,18 +14,14 @@ async function hashPassword(password: string) {
 }
 
 async function compareHashPassword(password: string, passwordHash: string) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, passwordHash, function (error, result) {
-      if (error) {
-        console.error(error);
-      }
-      try {
-        resolve(result);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  });
+  try {
+    const result = await bcrypt.compare(password, passwordHash);
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 }
 
 export {
