@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+
+    <%- await include('styles.ejs') %>
+  </head>
+  <body>
+    <div class="main-container">
+      <h1>Verify Your PayNest Account</h1>
+      <div class="content-container">
+        <p class="content">
+          Thank you for choosing PayNest. Kindly confirm your email address using the pin below. Note that this pin expires in five minutes.
+        </p>
+        <p class="token">
+            <%= token %>
+        </p>
+        <p class="thank-you">Thank You.</p>
+        <div>
+          <div>
+            <p class="footer">PAYNEST</p>
+            <p><%= date %></p>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="copy">All Rights Reserved PayNest 2024.</div>
+      </footer>
+    </div>
+  </body>
+</html>
