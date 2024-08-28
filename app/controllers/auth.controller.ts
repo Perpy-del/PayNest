@@ -45,8 +45,6 @@ export const createNewUserController = async (
   response: Response
 ) => {
   try {
-    console.log('Request Body:', request.body);
-    
     const { error } = registerUserValidation(request.body);
 
     if (error) return errorResponse(response, error.details[0].message, 400);
