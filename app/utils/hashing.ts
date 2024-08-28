@@ -4,19 +4,13 @@ import { config } from '../../config/envConfig.js';
 async function hashPassword(password: string) {
   const saltRound = Number(config.salt_round);
 
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRound, function (error, hash) {
-      if (error) {
-        console.error(error);
-      }
-      try {
-        resolve(hash);
-      } catch (error) {
-        console.log(error);
-        reject(error);
-      }
-    });
-  });
+  try {
+    const hash = await bcrypt.hash(password, saltRound);
+    return hash;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 async function compareHashPassword(password: string, passwordHash: string) {
