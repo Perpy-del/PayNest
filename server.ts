@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
+import { config } from './config/envConfig.js';
+
 import app from './app/index.js';
 
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const port = process.env.PORT || '3000';
+const port = config.port || '3000';
 app.set('port', port);
 
 app.listen(port, () => {
