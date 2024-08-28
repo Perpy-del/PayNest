@@ -43,6 +43,7 @@ const config: { [s: string]: import('knex').Knex.Config } = {
       database: envConfig.database_name as string,
       user: envConfig.database_user as string,
       password: envConfig.database_pass as string,
+      ssl: { rejectUnauthorized: false },
     },
     pool: {
       min: 2,
