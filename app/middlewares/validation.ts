@@ -6,7 +6,8 @@ export function verifyUserValidation(data: {email: string}) {
     email: Joi.string().email().required().trim()
   });
 
-  return schema.validate(data.email);
+  return schema.validate(data);
+}
 }
 
 export function registerUserValidation(data: RegisterUserValidationType) {
