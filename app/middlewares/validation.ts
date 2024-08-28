@@ -7,8 +7,7 @@ export function verifyUserValidation(data: {email: string}) {
   });
 
   return schema.validate(data);
-}
-}
+};
 
 export function registerUserValidation(data: RegisterUserValidationType) {
   const schema = Joi.object({
