@@ -22,7 +22,6 @@ async function compareHashPassword(password: string, passwordHash: string) {
     throw error;
   }
 }
-}
 
 export {
   hashPassword,
