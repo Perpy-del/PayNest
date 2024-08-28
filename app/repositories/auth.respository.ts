@@ -22,7 +22,7 @@ export const createNewOTP = async (data: {
   return otpDetails;
 };
 
-export const verifyTokenValidity = async (email: String) => {
+export const verifyTokenValidity = async (email: string) => {
   const verifyToken = await db('otps')
     .where('email', email)
     .andWhere('is_used', false)
