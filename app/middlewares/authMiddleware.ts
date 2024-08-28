@@ -35,4 +35,4 @@ async function authenticateUser(request: Request, response: Response, next: Next
   next();
 }
 
-module.exports = authenticateUser;
+export default authenticateUser;
