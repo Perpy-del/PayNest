@@ -1,4 +1,5 @@
 import {
+  changePasswordService,
   createNewUser,
   loginUserService,
   verifyUserService,
@@ -29,14 +30,9 @@ export const verifyUserController = async (
       'OTP sent successfully',
       result
     );
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log('Error sending OTP: ', error.message);
-      return errorResponse(response, error.message, 500);
-    } else {
-      console.log('Unexpected error: ', error);
-      return errorResponse(response, 'An unexpected error occurred', 500);
-    }
+  } catch (error: any) {
+    console.log('Error sending OTP: ', error.message);
+    return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
 
@@ -58,14 +54,9 @@ export const createNewUserController = async (
       'Verification successful',
       result
     );
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log('Error sending OTP: ', error.message);
-      return errorResponse(response, error.message, 500);
-    } else {
-      console.log('Unexpected error: ', error);
-      return errorResponse(response, 'An unexpected error occurred', 500);
-    }
+  } catch (error: any) {
+    console.log('Error sending OTP: ', error.message);
+    return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
 
@@ -81,13 +72,24 @@ export const loginUserController = async (
     const result = await loginUserService(request.body);
 
     return successResponse(response, 200, true, 'Login successful', result);
+  } catch (error: any) {
+    console.log('Error sending OTP: ', error.message);
+    return errorResponse(response, error.message, error.statusCode ?? 500);
+  }
+};
+
+export const changePasswordController = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    await changePasswordService(
+      request.headers.authorization?.split(' ')[1], request.body
+    );
+
+    return successResponse(response, 200, true, 'Password changed successfully', null);
   } catch (error) {
-    if (error instanceof Error) {
-      console.log('Error sending OTP: ', error.message);
-      return errorResponse(response, error.message, 500);
-    } else {
-      console.log('Unexpected error: ', error);
-      return errorResponse(response, 'An unexpected error occurred', 500);
-    }
+    console.log('Unexpected error: ', error);
+    return errorResponse(response, 'An unexpected error occurred', 500);
   }
 };
