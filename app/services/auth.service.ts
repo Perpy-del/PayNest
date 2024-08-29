@@ -21,6 +21,7 @@ import {
   PasswordTokenType,
 } from '../interfaces/auth.interface.js';
 import NotFoundError from '../errors/NotFoundError.js';
+import BadUserRequestError from '../errors/BadUserRequestError.js';
 
 export const verifyUserService = async (email: string) => {
   const checkUserExists = await verifyIfUserExists(email);
@@ -207,6 +208,51 @@ export const resetPasswordRequestService = async (email: string) => {
   };
 
   await createNewOTP(otpData);
+
+  return null;
+}
+
+export const resetPasswordService = async (resetPasswordData: {otp: string | number; newPassword: string; confirmPassword: string; email: string}) => {
+  const checkUserExists = await verifyIfUserExists(resetPasswordData.email);
+
+  if (!checkUserExists) {
+    throw new AuthenticationError('User does not exist in our database.');
+  }
+
+  const verifyToken = await verifyTokenValidity(resetPasswordData.email);
+
+  if (!verifyToken) {
+    throw new AuthenticationError('Invalid verification token.');
+  }
+
+  if (checkIfTokenHasExpired(verifyToken.expires_at)) {
+    throw new AuthenticationError('Token has expired');
+  }
+
+  if (verifyToken.is_used) {
+    throw new AuthenticationError('Token has already been used');
+  }
+
+  if (resetPasswordData.otp !== verifyToken.otp) {
+    throw new AuthenticationError(
+      'Invalid Token. Please confirm or request for another token.'
+    );
+  }
+
+  if (resetPasswordData.newPassword !== resetPasswordData.confirmPassword) {
+    throw new BadUserRequestError('Passwords do not match.');
+  }
+
+  const passwordHash = await hashPassword(resetPasswordData.newPassword);
+
+  const passwordData = {
+    password: passwordHash,
+    email: resetPasswordData.email,
+  }
+
+  await changePassword(passwordData);
+
+  await updateTokenToUsed(resetPasswordData.email);
 
   return null;
 }
