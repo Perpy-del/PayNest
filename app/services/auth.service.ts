@@ -1,3 +1,4 @@
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import AuthenticationError from '../errors/AuthenticationError.js';
 import sendEmail from '../utils/sendEmail.js';
 import { hashPassword, compareHashPassword } from '../utils/hashing.js';
@@ -7,6 +8,7 @@ import {
   generateRandomToken,
 } from '../utils/generateToken.js';
 import {
+  changePassword,
   createNewOTP,
   createUser,
   updateTokenToUsed,
@@ -17,7 +19,6 @@ import { jwtAuthToken } from '../middlewares/authToken.js';
 import {
   LoginUserValidationType,
   PasswordTokenType,
-  UserInterface,
 } from '../interfaces/auth.interface.js';
 
 export const verifyUserService = async (email: string) => {
@@ -148,3 +149,35 @@ export const loginUserService = async (data: LoginUserValidationType) => {
 
   return userData;
 };
+
+export const changePasswordService = async (token?: string, data?: {currentPassword: string; newPassword: string}) => {
+  const decoded: string | JwtPayload | null | undefined = token && jwt.decode(token);
+
+  const { email } = decoded as JwtPayload;
+
+  const existingUser = await verifyIfUserExists(email);
+
+  if (!existingUser) {
+    throw new AuthenticationError('User has not been authorized to change their password');
+  }
+
+  const comparePassword = await compareHashPassword(
+    data?.currentPassword as string,
+    existingUser.password
+  );
+
+  if (!comparePassword) {
+    throw new AuthenticationError('Password is incorrect. Please confirm your password');
+  }
+
+  const passwordHash = await hashPassword(data?.newPassword as string);
+
+  const passwordData = {
+    password: passwordHash,
+    email: email,
+  }
+
+  await changePassword(passwordData);
+
+  return null;
+}

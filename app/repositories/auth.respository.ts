@@ -58,3 +58,9 @@ export const createUser = async (data: {
 
     return result;
 }
+
+export const changePassword = async (data: {password: string; email: string}) => {
+  const newPass = await db('users').where({email: data.email}).update({password: data.password});
+
+  return newPass;
+}
