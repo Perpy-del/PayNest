@@ -2,6 +2,7 @@ import {
   changePasswordService,
   createNewUser,
   loginUserService,
+  resetPasswordRequestService,
   verifyUserService,
 } from '../services/auth.service.js';
 import { Request, Response } from 'express';
@@ -93,3 +94,24 @@ export const changePasswordController = async (
     return errorResponse(response, 'An unexpected error occurred', 500);
   }
 };
+
+export const resetPasswordRequestController = async (request: Request, response: Response) => {
+  try {
+    const { error } = verifyUserValidation(request.body);
+
+    if (error) return errorResponse(response, error.details[0].message, 400);
+
+    await resetPasswordRequestService(request.body.email);
+
+    return successResponse(
+      response,
+      200,
+      true,
+      'Password reset instructions sent',
+      null
+    );
+  } catch (error: any) {
+    console.log('Error sending OTP: ', error.message);
+    return errorResponse(response, error.message, error.statusCode ?? 500);
+  }
+}

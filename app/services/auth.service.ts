@@ -20,6 +20,7 @@ import {
   LoginUserValidationType,
   PasswordTokenType,
 } from '../interfaces/auth.interface.js';
+import NotFoundError from '../errors/NotFoundError.js';
 
 export const verifyUserService = async (email: string) => {
   const checkUserExists = await verifyIfUserExists(email);
@@ -178,6 +179,34 @@ export const changePasswordService = async (token?: string, data?: {currentPassw
   }
 
   await changePassword(passwordData);
+
+  return null;
+}
+
+export const resetPasswordRequestService = async (email: string) => {
+  const existingUser = await verifyIfUserExists(email);
+
+  if (!existingUser) {
+    throw new NotFoundError('User not found. Please sign up');
+  }
+
+  const generateResult = await generateRandomToken();
+
+  const { passwordToken, expiryTime } = generateResult as PasswordTokenType;
+
+  await sendEmail(email, 'Reset Your PayNest Password', 'resetPassword', {
+    firstName: existingUser.firstName,
+    token: passwordToken,
+    date: convertDateFormat(new Date().toString()),
+  });
+
+  const otpData = {
+    otp: passwordToken,
+    email: email,
+    expires_at: expiryTime,
+  };
+
+  await createNewOTP(otpData);
 
   return null;
 }

@@ -9,7 +9,7 @@ export const generateRandomToken = (): Promise<PasswordTokenType> => {
         return reject(error);
       }
       const now = new Date();
-      const expiryTime = add(now, { minutes: 30 });
+      const expiryTime = add(now, { minutes: 10 });
       resolve({ passwordToken, expiryTime });
     });
   });
