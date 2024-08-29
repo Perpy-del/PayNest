@@ -23,8 +23,19 @@ export function registerUserValidation(data: RegisterUserValidationType) {
 
 export function loginUserValidation(data: LoginUserValidationType) {
   const schema = Joi.object({
-    email: Joi.string().required().trim(),
+    email: Joi.string().email().required().trim(),
     password: Joi.string().required().trim(),
   });
+  return schema.validate(data);
+}
+
+export function resetPasswordValidation(data: {email: string; otp: string; newPassword: string; confirmPassword: string}) {
+  const schema = Joi.object({
+    email: Joi.string().email().required().trim(),
+    otp: Joi.string().required().trim(),
+    newPassword: Joi.string().required().trim(),
+    confirmPassword: Joi.string().required().trim(),
+  })
+
   return schema.validate(data);
 }

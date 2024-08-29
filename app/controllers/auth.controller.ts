@@ -3,12 +3,14 @@ import {
   createNewUser,
   loginUserService,
   resetPasswordRequestService,
+  resetPasswordService,
   verifyUserService,
 } from '../services/auth.service.js';
 import { Request, Response } from 'express';
 import {
   loginUserValidation,
   registerUserValidation,
+  resetPasswordValidation,
   verifyUserValidation,
 } from '../middlewares/validation.js';
 import { errorResponse, successResponse } from '../utils/responseHandler.js';
@@ -56,7 +58,7 @@ export const createNewUserController = async (
       result
     );
   } catch (error: any) {
-    console.log('Error sending OTP: ', error.message);
+    console.log('Error verifying user: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
@@ -74,7 +76,7 @@ export const loginUserController = async (
 
     return successResponse(response, 200, true, 'Login successful', result);
   } catch (error: any) {
-    console.log('Error sending OTP: ', error.message);
+    console.log('Error logging in user: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
@@ -85,17 +87,27 @@ export const changePasswordController = async (
 ) => {
   try {
     await changePasswordService(
-      request.headers.authorization?.split(' ')[1], request.body
+      request.headers.authorization?.split(' ')[1],
+      request.body
     );
 
-    return successResponse(response, 200, true, 'Password changed successfully', null);
-  } catch (error) {
-    console.log('Unexpected error: ', error);
-    return errorResponse(response, 'An unexpected error occurred', 500);
+    return successResponse(
+      response,
+      200,
+      true,
+      'Password changed successfully',
+      null
+    );
+  } catch (error: any) {
+    console.log('Error changing password: ', error.message);
+    return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
 
-export const resetPasswordRequestController = async (request: Request, response: Response) => {
+export const resetPasswordRequestController = async (
+  request: Request,
+  response: Response
+) => {
   try {
     const { error } = verifyUserValidation(request.body);
 
@@ -111,7 +123,31 @@ export const resetPasswordRequestController = async (request: Request, response:
       null
     );
   } catch (error: any) {
-    console.log('Error sending OTP: ', error.message);
+    console.log('Error sending password request: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-}
+};
+
+export const resetPasswordController = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const { error } = resetPasswordValidation(request.body);
+
+    if (error) return errorResponse(response, error.details[0].message, 400);
+
+    await resetPasswordService(request.body);
+
+    return successResponse(
+      response,
+      200,
+      true,
+      'Password reset successful',
+      null
+    );
+  } catch (error: any) {
+    console.log('Error resetting password: ', error.message);
+    return errorResponse(response, error.message, error.statusCode ?? 500);
+  }
+};
