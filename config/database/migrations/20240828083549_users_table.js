@@ -4,7 +4,7 @@
  */
 export async function up(knex) {
   return knex.schema.createTable('users', table => {
-    table.uuid('id').primary();;
+    table.uuid('id').primary();
     table.enu('status', ['active', 'inactive']).defaultTo('inactive');
     table.string('username', 255).notNullable().unique();
     table.string('email', 255).notNullable().unique();
