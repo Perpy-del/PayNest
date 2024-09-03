@@ -1,7 +1,7 @@
 import ejs from 'ejs';
 import dotenv from 'dotenv';
 import transporter from '../../config/nodemail.js';
-import {config} from '../../config/envConfig.js';
+import env from '../../config/env.js';
 
 dotenv.config();
 
@@ -24,7 +24,7 @@ const sendEmail = async (to: string, subject: string, template: string, data: Em
       );
   
       const mailOptions = {
-        from: config.nodemailer_user,
+        from: env.nodemailer_user,
         to,
         subject,
         html,
