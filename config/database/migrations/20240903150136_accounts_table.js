@@ -4,7 +4,7 @@
  */
 export async function up(knex) {
   return knex.schema.createTable('accounts', table => {
-    table.uuid('id').primary();
+    table.uuid('id').defaultTo(knex.fn.uuid()).primary();
     table.uuid('user_id').references('id').inTable('users');
     table.decimal('balance', 15, 2).notNullable().defaultTo(0.0);
     table.boolean('is_default').defaultTo(true);
