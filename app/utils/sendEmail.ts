@@ -11,30 +11,29 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const sendEmail = async (
-  to: string,
-  subject: string,
-  template: string,
-  data: {}
-) => {
-  try {
-    const html = await ejs.renderFile(
-      `${__dirname}/templates/${template}.ejs`,
-      data,
-      { async: true }
-    );
+interface EmailData {
+  [key: string]: any;
+}
 
-    const mailOptions = {
-      from: env.nodemailer_user,
-      to,
-      subject,
-      html,
-    };
-
-    await transporter.sendMail(mailOptions);
-  } catch (err) {
-    console.log('Error: ', err);
-  }
-};
-
-export default sendEmail;
+const sendEmail = async (to: string, subject: string, template: string, data: EmailData): Promise<void> => {
+    try {
+      const html = await ejs.renderFile(
+        `${__dirname}/templates/${template}.ejs`,
+        data,
+        { async: true },
+      );
+  
+      const mailOptions = {
+        from: config.nodemailer_user,
+        to,
+        subject,
+        html,
+      };
+  
+      await transporter.sendMail(mailOptions);
+    } catch (err) {
+      console.log('Error: ', err);
+    }
+  };
+  
+  export default sendEmail;
