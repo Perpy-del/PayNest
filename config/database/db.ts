@@ -4,5 +4,5 @@ import config from './knexfile.js';
 
 dotenv.config();
 
-const db = knex(config.development);
+const db = knex(config);
 export default db;
