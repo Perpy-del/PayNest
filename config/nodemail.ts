@@ -1,13 +1,13 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import { config } from '../config/envConfig.js';
+import env from './env.js';
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: config.nodemailer_service,
+  service: env.nodemailer_service,
   auth: {
-    user: config.nodemailer_user,
-    pass: config.nodemailer_pass,
+    user: env.nodemailer_user,
+    pass: env.nodemailer_pass,
   },
 });
 
