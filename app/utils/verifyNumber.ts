@@ -1,17 +1,15 @@
 import twilio from 'twilio';
 import env from '../../config/env.js';
 
-export const verifyUser = async (phone_number: string) => {
+export const verifyUser = async (phone_number: string, token: string) => {
   try {
     const client = twilio(env.twilio_account, env.twilio_token);
 
     const result = await client.messages.create({
-      body: 'Your verification token is 12345',
+      body: `Your verification token is ${token}`,
       from: env.twilio_sender,
       to: phone_number,
     });
-
-    console.log('SMS RESULT', result);
 
     return result;
   } catch (error) {
