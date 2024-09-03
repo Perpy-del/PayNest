@@ -14,9 +14,8 @@ import {
   verifyUserValidation,
 } from '../middlewares/validation.js';
 import { errorResponse, successResponse } from '../utils/responseHandler.js';
-import { catchAsyncError } from '../utils/tryCatchHandler.js';
 
-export const verifyUserController = catchAsyncError(async (
+export const verifyUserController = async (
   request: Request,
   response: Response
 ) => {
@@ -39,9 +38,9 @@ export const verifyUserController = catchAsyncError(async (
     console.log('Error sending OTP: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-});
+};
 
-export const createNewUserController = catchAsyncError(async (
+export const createNewUserController = async (
   request: Request,
   response: Response
 ) => {
@@ -63,9 +62,9 @@ export const createNewUserController = catchAsyncError(async (
     console.log('Error verifying user: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-});
+};
 
-export const loginUserController = catchAsyncError(async (
+export const loginUserController = async (
   request: Request,
   response: Response
 ) => {
@@ -81,9 +80,9 @@ export const loginUserController = catchAsyncError(async (
     console.log('Error logging in user: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-});
+};
 
-export const changePasswordController = catchAsyncError(async (
+export const changePasswordController = async (
   request: Request,
   response: Response
 ) => {
@@ -104,9 +103,9 @@ export const changePasswordController = catchAsyncError(async (
     console.log('Error changing password: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-});
+};
 
-export const resetPasswordRequestController = catchAsyncError(async (
+export const resetPasswordRequestController = async (
   request: Request,
   response: Response
 ) => {
@@ -128,9 +127,9 @@ export const resetPasswordRequestController = catchAsyncError(async (
     console.log('Error sending password request: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-});
+};
 
-export const resetPasswordController = catchAsyncError(async (
+export const resetPasswordController = async (
   request: Request,
   response: Response
 ) => {
@@ -152,4 +151,4 @@ export const resetPasswordController = catchAsyncError(async (
     console.log('Error resetting password: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-});
+};
