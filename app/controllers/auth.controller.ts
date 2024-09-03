@@ -1,10 +1,10 @@
 import {
-  changePasswordService,
+  getNewPassword,
   createNewUser,
-  loginUserService,
-  resetPasswordRequestService,
-  resetPasswordService,
-  verifyUserService,
+  loginUser,
+  resetPasswordRequest,
+  resetPassword,
+  verifyUser,
 } from '../services/auth.service.js';
 import { Request, Response } from 'express';
 import {
@@ -14,17 +14,19 @@ import {
   verifyUserValidation,
 } from '../middlewares/validation.js';
 import { errorResponse, successResponse } from '../utils/responseHandler.js';
+import { catchAsyncError } from '../utils/tryCatchHandler.js';
 
-export const verifyUserController = async (
+export const verifyUserController = catchAsyncError(async (
   request: Request,
   response: Response
 ) => {
   try {
-    const { error } = verifyUserValidation(request.body.email);
+    const { email } = request.body;
+    const { error } = verifyUserValidation(email);
 
     if (error) return errorResponse(response, error.details[0].message, 400);
 
-    const result = await verifyUserService(request.body.email);
+    const result = await verifyUser(request.body.email);
 
     return successResponse(
       response,
@@ -37,9 +39,9 @@ export const verifyUserController = async (
     console.log('Error sending OTP: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-};
+});
 
-export const createNewUserController = async (
+export const createNewUserController = catchAsyncError(async (
   request: Request,
   response: Response
 ) => {
@@ -61,9 +63,9 @@ export const createNewUserController = async (
     console.log('Error verifying user: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-};
+});
 
-export const loginUserController = async (
+export const loginUserController = catchAsyncError(async (
   request: Request,
   response: Response
 ) => {
@@ -72,21 +74,21 @@ export const loginUserController = async (
 
     if (error) return errorResponse(response, error.details[0].message, 400);
 
-    const result = await loginUserService(request.body);
+    const result = await loginUser(request.body);
 
     return successResponse(response, 200, true, 'Login successful', result);
   } catch (error: any) {
     console.log('Error logging in user: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-};
+});
 
-export const changePasswordController = async (
+export const changePasswordController = catchAsyncError(async (
   request: Request,
   response: Response
 ) => {
   try {
-    await changePasswordService(
+    await getNewPassword(
       request.headers.authorization?.split(' ')[1],
       request.body
     );
@@ -102,9 +104,9 @@ export const changePasswordController = async (
     console.log('Error changing password: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-};
+});
 
-export const resetPasswordRequestController = async (
+export const resetPasswordRequestController = catchAsyncError(async (
   request: Request,
   response: Response
 ) => {
@@ -113,7 +115,7 @@ export const resetPasswordRequestController = async (
 
     if (error) return errorResponse(response, error.details[0].message, 400);
 
-    await resetPasswordRequestService(request.body.email);
+    await resetPasswordRequest(request.body.email);
 
     return successResponse(
       response,
@@ -126,9 +128,9 @@ export const resetPasswordRequestController = async (
     console.log('Error sending password request: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-};
+});
 
-export const resetPasswordController = async (
+export const resetPasswordController = catchAsyncError(async (
   request: Request,
   response: Response
 ) => {
@@ -137,7 +139,7 @@ export const resetPasswordController = async (
 
     if (error) return errorResponse(response, error.details[0].message, 400);
 
-    await resetPasswordService(request.body);
+    await resetPassword(request.body);
 
     return successResponse(
       response,
@@ -150,4 +152,4 @@ export const resetPasswordController = async (
     console.log('Error resetting password: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-};
+});
