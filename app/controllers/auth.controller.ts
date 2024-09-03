@@ -20,8 +20,7 @@ export const verifyUserController = async (
   response: Response
 ) => {
   try {
-    const { email } = request.body;
-    const { error } = verifyUserValidation(email);
+    const { error } = verifyUserValidation(request.body);
 
     if (error) return errorResponse(response, error.details[0].message, 400);
 
