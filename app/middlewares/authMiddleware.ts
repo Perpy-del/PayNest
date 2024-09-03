@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { config } from '../../config/envConfig.js';
+import env from '../../config/env.js';
 
 import jwt from 'jsonwebtoken';
 
@@ -24,7 +24,7 @@ async function authenticateUser(
   const [bearer, token] = authorizationHeader.split(' ');
 
   try {
-    jwt.verify(token, config.jwt_access as string);
+    jwt.verify(token, env.jwt_access as string);
     next();
   } catch (error) {
     console.error('JWT verification error:', error);
