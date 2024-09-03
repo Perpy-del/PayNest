@@ -23,7 +23,7 @@ import {
 import NotFoundError from '../errors/NotFoundError.js';
 import BadUserRequestError from '../errors/BadUserRequestError.js';
 
-export const verifyUserService = async (email: string) => {
+export const verifyUser = async (email: string) => {
   const checkUserExists = await verifyIfUserExists(email);
 
   if (checkUserExists) {
@@ -127,7 +127,7 @@ export const createNewUser = async (userData: {
   return result;
 };
 
-export const loginUserService = async (data: LoginUserValidationType) => {
+export const loginUser = async (data: LoginUserValidationType) => {
   const checkUserExists = await verifyIfUserExists(data.email);
 
   if (!checkUserExists) {
@@ -152,7 +152,7 @@ export const loginUserService = async (data: LoginUserValidationType) => {
   return userData;
 };
 
-export const changePasswordService = async (token?: string, data?: {currentPassword: string; newPassword: string}) => {
+export const getNewPassword = async (token?: string, data?: {currentPassword: string; newPassword: string}) => {
   const decoded: string | JwtPayload | null | undefined = token && jwt.decode(token);
 
   const { email } = decoded as JwtPayload;
@@ -184,7 +184,7 @@ export const changePasswordService = async (token?: string, data?: {currentPassw
   return null;
 }
 
-export const resetPasswordRequestService = async (email: string) => {
+export const resetPasswordRequest = async (email: string) => {
   const existingUser = await verifyIfUserExists(email);
 
   if (!existingUser) {
@@ -212,7 +212,7 @@ export const resetPasswordRequestService = async (email: string) => {
   return null;
 }
 
-export const resetPasswordService = async (resetPasswordData: {otp: string | number; newPassword: string; confirmPassword: string; email: string}) => {
+export const resetPassword = async (resetPasswordData: {otp: string | number; newPassword: string; confirmPassword: string; email: string}) => {
   const checkUserExists = await verifyIfUserExists(resetPasswordData.email);
 
   if (!checkUserExists) {

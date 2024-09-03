@@ -1,9 +1,13 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 import { config } from '../../config/envConfig.js';
 
 import jwt from 'jsonwebtoken';
 
-async function authenticateUser(request: Request, response: Response, next: NextFunction) {
+async function authenticateUser(
+  request: Request,
+  response: Response,
+  next: NextFunction
+) {
   const authorizationHeader = request.headers.authorization;
 
   if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
@@ -21,6 +25,7 @@ async function authenticateUser(request: Request, response: Response, next: Next
 
   try {
     jwt.verify(token, config.jwt_access as string);
+    next();
   } catch (error) {
     console.error('JWT verification error:', error);
     return response.status(401).json({
@@ -32,8 +37,6 @@ async function authenticateUser(request: Request, response: Response, next: Next
       },
     });
   }
-
-  next();
 }
 
 export default authenticateUser;
