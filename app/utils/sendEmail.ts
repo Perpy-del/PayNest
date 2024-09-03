@@ -24,7 +24,7 @@ const sendEmail = async (to: string, subject: string, template: string, data: Em
       );
   
       const mailOptions = {
-        from: config.nodemailer_user,
+        from: env.nodemailer_user,
         to,
         subject,
         html,
