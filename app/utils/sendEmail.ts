@@ -11,7 +11,11 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const sendEmail = async (to: string, subject: string, template: string, data: {}) => {
+interface EmailData {
+  [key: string]: any;
+}
+
+const sendEmail = async (to: string, subject: string, template: string, data: EmailData): Promise<void> => {
     try {
       const html = await ejs.renderFile(
         `${__dirname}/templates/${template}.ejs`,
