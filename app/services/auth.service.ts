@@ -14,7 +14,7 @@ import {
   updateTokenToUsed,
   verifyIfUserExists,
   verifyTokenValidity,
-} from '../repositories/auth.respository.js';
+} from '../repositories/auth.repository.js';
 import { jwtAuthToken } from '../middlewares/authToken.js';
 import {
   LoginUserValidationType,
