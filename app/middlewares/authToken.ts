@@ -1,12 +1,12 @@
-import { addSeconds, getTime } from "date-fns";
+import { addSeconds, getTime } from 'date-fns';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { TokenPayload } from "../interfaces/auth.interface";
-import { config } from '../../config/envConfig.js';
+import { TokenPayload } from '../interfaces/auth.interface';
+import env from '../../config/env.js';
 dotenv.config();
 
 export const jwtAuthToken = (details: TokenPayload) => {
-  const expiryDate = addSeconds(new Date(), Number(config.jwt_expiration));
+  const expiryDate = addSeconds(new Date(), Number(env.jwt_expiration));
 
   const payload = {
     exp: Math.floor(getTime(expiryDate) / 1000),
@@ -14,8 +14,8 @@ export const jwtAuthToken = (details: TokenPayload) => {
     id: details.id,
   };
 
-  const token = jwt.sign(payload, config.jwt_access as string, {
-    issuer: config.jwt_issuer,
+  const token = jwt.sign(payload, env.jwt_access as string, {
+    issuer: env.jwt_issuer,
   });
 
   return token;

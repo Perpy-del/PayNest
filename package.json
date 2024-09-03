@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start:dev": "set NODE_ENV=development && nodemon",
+    "start:dev": "nodemon",
     "migrate": "npx knex migrate:latest --knexfile config/database/knexfile.js",
-    "start:test": "set NODE_ENV=staging && nodemon server",
-    "start:prod": "SET NODE_ENV=production && node dist/server.js"
+    "start:test": "nodemon server",
+    "start:prod": "node dist/server.js"
   },
   "type": "module",
   "dependencies": {
