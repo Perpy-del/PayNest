@@ -4,7 +4,7 @@ function convertDateFormat(dateString: string): string {
   // Parse the date string into a Date object
   const date = new Date(dateString);
 
-  if (isNaN(date.getTime())) {
+  if (Number.isNaN(date.getTime())) {
     throw new Error('Invalid date string');
   }
 
