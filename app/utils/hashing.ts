@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
-import { config } from '../../config/envConfig.js';
+import env from '../../config/env.js';
 
 async function hashPassword(password: string) {
-  const saltRound = Number(config.salt_round);
+  const saltRound = Number(env.salt_round);
 
   try {
     const hash = await bcrypt.hash(password, saltRound);
@@ -23,7 +23,4 @@ async function compareHashPassword(password: string, passwordHash: string) {
   }
 }
 
-export {
-  hashPassword,
-  compareHashPassword,
-};
+export { hashPassword, compareHashPassword };

@@ -1,17 +1,15 @@
-import dotenv from "dotenv";
-dotenv.config();
+import 'dotenv/config';
 
-// setting up node development environment
-export const development = {
+export default {
   port: process.env.PORT,
-  database_client: process.env.DEV_DB_CLIENT,
-  database_name: process.env.DEV_DB_NAME,
-  database_user: process.env.DEV_DB_USER,
-  database_pass: process.env.DEV_DB_PASSWORD,
-  salt_round: process.env.DEV_BCRYPT_SALT_ROUND,
+  database_client: process.env.DB_CLIENT,
+  database_name: process.env.DB_NAME,
+  database_user: process.env.DB_USER,
+  database_pass: process.env.DB_PASSWORD,
+  salt_round: process.env.BCRYPT_SALT_ROUND,
   jwt_expiration: process.env.JWT_EXPIRATION,
-  jwt_access: process.env.DEV_APP_SECRET,
-  jwt_issuer: process.env.DEV_JWT_ISSUER,
+  jwt_access: process.env.APP_SECRET,
+  jwt_issuer: process.env.JWT_ISSUER,
 
   // NODEMAILER ENV PARAMETERS/VARIABLES
   nodemailer_user: process.env.NODEMAILER_USER,
