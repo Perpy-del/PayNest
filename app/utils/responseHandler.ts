@@ -1,8 +1,8 @@
 import { Response } from "express";
 
-export const successResponse = (res: Response, statusCode: number, status: boolean, message: string, data: Record<string, unknown> | null = {}) => {
+export const successResponse = (res: Response, statusCode: number, success: boolean, message: string, data: Record<string, unknown> | null = {}) => {
   res.status(statusCode).json({
-    success: status,
+    success,
     message,
     data,
   });

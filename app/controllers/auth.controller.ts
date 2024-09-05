@@ -82,12 +82,13 @@ export const loginUserController = async (
 };
 
 export const changePasswordController = async (
-  request: Request,
+  request: Request | any,
   response: Response
 ) => {
   try {
+    const user = request.user;
     await getNewPassword(
-      request.headers.authorization?.split(' ')[1],
+      user,
       request.body
     );
 

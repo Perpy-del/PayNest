@@ -2,12 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { getUser } from '../repositories/user.repository.js';
 import BadUserRequestError from '../errors/BadUserRequestError.js';
 
-export const getUserProfile: any = async (token: string) => {
-  const decoded: string | JwtPayload | null | undefined =
-    token && jwt.decode(token);
-
-  const { id } = decoded as JwtPayload;
-
+export const getUserProfile: any = async (id: string) => {
   const existingUserProfile = await getUser(id);
 
   if (!existingUserProfile) {
