@@ -3,13 +3,13 @@ import { getUserProfile } from '../services/user.service.js';
 import { errorResponse, successResponse } from '../utils/responseHandler.js';
 
 export const getUserController = async (
-  request: Request,
+  request: Request | any,
   response: Response
 ) => {
   try {
-    const result = await getUserProfile(
-      request.headers.authorization?.split(' ')[1] as string
-    );
+    const { id } = request.user;
+
+    const result = await getUserProfile(id);
 
     return successResponse(
       response,

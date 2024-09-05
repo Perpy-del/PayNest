@@ -152,20 +152,10 @@ export const loginUser = async (data: LoginUserValidationType) => {
   return userData;
 };
 
-export const getNewPassword = async (token?: string, data?: {currentPassword: string; newPassword: string}) => {
-  const decoded: string | JwtPayload | null | undefined = token && jwt.decode(token);
-
-  const { email } = decoded as JwtPayload;
-
-  const existingUser = await verifyIfUserExists(email);
-
-  if (!existingUser) {
-    throw new AuthenticationError('User has not been authorized to change their password');
-  }
-
+export const getNewPassword = async (user: any, data?: {currentPassword: string; newPassword: string}) => {
   const comparePassword = await compareHashPassword(
     data?.currentPassword as string,
-    existingUser.password
+    user.password
   );
 
   if (!comparePassword) {
@@ -176,7 +166,7 @@ export const getNewPassword = async (token?: string, data?: {currentPassword: st
 
   const passwordData = {
     password: passwordHash,
-    email: email,
+    email: user.email,
   }
 
   await changePassword(passwordData);
