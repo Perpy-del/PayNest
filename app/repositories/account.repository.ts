@@ -22,13 +22,7 @@ export const getAccounts = async (
     })
     .select('id as account_id', 'balance', 'created_at');
 
-  const formattedResult = query.map((account: any) => ({
-    account_id: account.account_id,
-    balance: parseFloat(account.balance),
-    created_at: account.created_at.toISOString().split('T')[0],
-  }));
-
-  return formattedResult;
+  return query;
 };
 
 export const createAccount = async (data: {

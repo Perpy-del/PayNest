@@ -27,5 +27,11 @@ export const getAllAccounts = async (
 ) => {
   const accountResults = await getAccounts(userId, balance, start_date, end_date)
 
-  return accountResults;
+  const formattedResult = accountResults.map((account: any) => ({
+    account_id: account.account_id,
+    balance: parseFloat(account.balance),
+    created_at: account.created_at.toISOString().split('T')[0],
+  }));
+
+  return formattedResult;
 };
