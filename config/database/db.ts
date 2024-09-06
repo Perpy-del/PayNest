@@ -1,6 +1,6 @@
 import knex from "knex";
 import dotenv from 'dotenv';
-import config from './knexfile.ts';
+import config from './knexfile.js';
 
 dotenv.config();
 

@@ -12,6 +12,7 @@
       "strict": true,
       "typeRoots": ["./app/types", "./node_modules/@types"],
       "allowImportingTsExtensions": true,
+      "allowJs": true,
       "noEmit": true,
     },
     "include": ["app/**/*.ts", "server.ts"],
