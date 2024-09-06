@@ -1,10 +1,10 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import rotatingFileStream from '../config/logger.js';
+import rotatingFileStream from '../config/logger.ts';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import apiRouter from './routes/index.js';
+import apiRouter from './routes/index.ts';
 
 dotenv.config();
 

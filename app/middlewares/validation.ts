@@ -39,3 +39,11 @@ export function resetPasswordValidation(data: {email: string; otp: string; newPa
 
   return schema.validate(data);
 }
+
+export function createAccountValidation(data: {balance: number; isDefault: boolean}) {
+  const schema = Joi.object({
+    balance: Joi.number().precision(2).required(),
+  })
+
+  return schema.validate(data);
+}

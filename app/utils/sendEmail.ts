@@ -1,7 +1,7 @@
 import ejs from 'ejs';
 import dotenv from 'dotenv';
-import transporter from '../../config/nodemail.js';
-import env from '../../config/env.js';
+import transporter from '../../config/nodemail.ts';
+import env from '../../config/env.ts';
 
 dotenv.config();
 

@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import env from '../env.js';
 
 dotenv.config();
 
@@ -7,12 +6,12 @@ dotenv.config();
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 
-const config: any = {
-  client: env.database_client as string,
+const config = {
+  client: process.env.DB_CLIENT,
   connection: {
-    database: env.database_name as string,
-    user: env.database_user as string,
-    password: env.database_pass as string,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
   },
   pool: {
     min: 2,
