@@ -1,28 +1,34 @@
-import db from '../../config/database/db';
+import db from '../../config/database/db.js';
+import dateConversion from '../utils/dateConversion.js';
 
-export const getAccounts = async (data: {
-  userId: string;
-  balance: number;
-  start_date: string;
-  end_date: string;
-}) => {
-  let query = db('accounts').where({ user_id: data.userId });
+export const getAccounts = async (
+  userId: string,
+  balance: number,
+  start_date: string,
+  end_date: string
+) => {
+  const query = await db('accounts')
+    .where({ user_id: userId })
+    .modify(queryBuilder => {
+      if (balance) {
+        queryBuilder.where('balance', '>', balance);
+      }
+      if (start_date) {
+        queryBuilder.where('created_at', '>=', dateConversion(start_date));
+      }
+      if (end_date) {
+        queryBuilder.where('created_at', '<=', dateConversion(end_date));
+      }
+    })
+    .select('id as account_id', 'balance', 'created_at');
 
-  if (data.balance) {
-    query = query.andWhere('balance', '>', data.balance);
-  }
+  const formattedResult = query.map((account: any) => ({
+    account_id: account.account_id,
+    balance: parseFloat(account.balance),
+    created_at: account.created_at.toISOString().split('T')[0],
+  }));
 
-  if (data.start_date) {
-    query = query.andWhere('created_at', '>=', data.start_date);
-  }
-
-  if (data.end_date) {
-    query = query.andWhere('created_at', '<=', data.end_date);
-  }
-
-  const accounts = await query;
-
-  return accounts;
+  return formattedResult;
 };
 
 export const createAccount = async (data: {
