@@ -28,13 +28,11 @@ export const getAccounts = async (
 export const createAccount = async (data: {
   userId: string;
   balance: number;
-  isDefault: boolean;
 }) => {
   const [newAccount] = await db('accounts')
     .insert({
       user_id: data.userId,
       balance: data.balance,
-      is_default: data.isDefault,
     })
     .returning('*');
 

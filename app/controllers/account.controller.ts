@@ -17,12 +17,11 @@ export const createAccountController = async (
 
     const user = request.user;
 
-    const { balance, isDefault } = request.body;
+    const { balance } = request.body;
 
     const newAccount = await createNewAccount({
       userId: user.id,
       balance,
-      isDefault,
     });
 
     return successResponse(
@@ -62,7 +61,7 @@ export const getAccountsController = async (
       accountsResult
     );
   } catch (error: any) {
-    console.log('Error sending OTP: ', error.message);
+    console.log('Error retrieving accounts: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
