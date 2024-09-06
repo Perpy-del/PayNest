@@ -1,5 +1,5 @@
-import BadUserRequestError from '../errors/BadUserRequestError.js';
-import { createAccount, getAccounts } from '../repositories/account.repository.js';
+import BadUserRequestError from '../errors/BadUserRequestError.ts';
+import { createAccount, getAccounts } from '../repositories/account.repository.ts';
 
 export const createNewAccount = async (accountData: {
   userId: string;

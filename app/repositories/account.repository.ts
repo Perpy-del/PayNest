@@ -1,5 +1,5 @@
-import db from '../../config/database/db.js';
-import dateConversion from '../utils/dateConversion.js';
+import db from '../../config/database/db.ts';
+import dateConversion from '../utils/dateConversion.ts';
 
 export const getAccounts = async (
   userId: string,

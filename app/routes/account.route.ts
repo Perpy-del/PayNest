@@ -1,9 +1,9 @@
 import express from 'express';
-import authenticateUser from '../middlewares/authMiddleware.js';
+import authenticateUser from '../middlewares/authMiddleware.ts';
 import {
   createAccountController,
   getAccountsController,
-} from '../controllers/account.controller.js';
+} from '../controllers/account.controller.ts';
 
 const accountRouter = express.Router();
 

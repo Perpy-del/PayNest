@@ -1,6 +1,5 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { getUser } from '../repositories/user.repository.js';
-import BadUserRequestError from '../errors/BadUserRequestError.js';
+import { getUser } from '../repositories/user.repository.ts';
+import BadUserRequestError from '../errors/BadUserRequestError.ts';
 
 export const getUserProfile: any = async (id: string) => {
   const existingUserProfile = await getUser(id);

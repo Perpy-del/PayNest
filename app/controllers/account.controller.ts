@@ -1,10 +1,10 @@
-import { createAccountValidation } from '../middlewares/validation.js';
+import { createAccountValidation } from '../middlewares/validation.ts';
 import { Request, Response } from 'express';
-import { errorResponse, successResponse } from '../utils/responseHandler.js';
+import { errorResponse, successResponse } from '../utils/responseHandler.ts';
 import {
   createNewAccount,
   getAllAccounts,
-} from '../services/account.service.js';
+} from '../services/account.service.ts';
 
 export const createAccountController = async (
   request: Request | any,
