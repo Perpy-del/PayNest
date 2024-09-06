@@ -33,7 +33,7 @@ export const createAccountController = async (
       newAccount
     );
   } catch (error: any) {
-    console.log('Error sending OTP: ', error.message);
+    console.log('Error creating account: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
