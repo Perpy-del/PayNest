@@ -14,6 +14,6 @@ export async function up(knex) {
  */
 export async function down(knex) {
   return knex.schema.table('accounts', table => {
-    table.dropColumn('is_default');
+    table.decimal('balance').alter();
   });
 }
