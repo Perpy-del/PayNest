@@ -4,7 +4,6 @@ import { createAccount, getAccounts } from '../repositories/account.repository.j
 export const createNewAccount = async (accountData: {
   userId: string;
   balance: number;
-  isDefault: boolean;
 }) => {
   if (accountData.balance == null || accountData.balance < 0) {
     throw new BadUserRequestError('Invalid balance amount');
@@ -12,7 +11,6 @@ export const createNewAccount = async (accountData: {
   const data = {
     userId: accountData.userId,
     balance: accountData.balance,
-    isDefault: accountData.isDefault,
   };
   const result = await createAccount(data);
 
