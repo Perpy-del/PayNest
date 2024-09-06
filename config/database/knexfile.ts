@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import env from '../env.js';
+import env from '../env.ts';
 
 dotenv.config();
 

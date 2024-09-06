@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { getUserProfile } from '../services/user.service.js';
-import { errorResponse, successResponse } from '../utils/responseHandler.js';
+import { getUserProfile } from '../services/user.service.ts';
+import { errorResponse, successResponse } from '../utils/responseHandler.ts';
 
 export const getUserController = async (
   request: Request | any,
