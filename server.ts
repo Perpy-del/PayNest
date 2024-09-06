@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import env from './config/env.js';
+import env from './config/env.ts';
 
-import app from './app/index.js';
+import app from './app/index.ts';
 
 import dotenv from 'dotenv';
 

@@ -1,12 +1,11 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import AuthenticationError from '../errors/AuthenticationError.js';
-import sendEmail from '../utils/sendEmail.js';
-import { hashPassword, compareHashPassword } from '../utils/hashing.js';
-import convertDateFormat from '../utils/convertDateFormat.js';
+import AuthenticationError from '../errors/AuthenticationError.ts';
+import sendEmail from '../utils/sendEmail.ts';
+import { hashPassword, compareHashPassword } from '../utils/hashing.ts';
+import convertDateFormat from '../utils/convertDateFormat.ts';
 import {
   checkIfTokenHasExpired,
   generateRandomToken,
-} from '../utils/generateToken.js';
+} from '../utils/generateToken.ts';
 import {
   changePassword,
   createNewOTP,
@@ -14,14 +13,14 @@ import {
   updateTokenToUsed,
   verifyIfUserExists,
   verifyTokenValidity,
-} from '../repositories/auth.repository.js';
-import { jwtAuthToken } from '../middlewares/authToken.js';
+} from '../repositories/auth.repository.ts';
+import { jwtAuthToken } from '../middlewares/authToken.ts';
 import {
   LoginUserValidationType,
   PasswordTokenType,
-} from '../interfaces/auth.interface.js';
-import NotFoundError from '../errors/NotFoundError.js';
-import BadUserRequestError from '../errors/BadUserRequestError.js';
+} from '../interfaces/auth.interface.ts';
+import NotFoundError from '../errors/NotFoundError.ts';
+import BadUserRequestError from '../errors/BadUserRequestError.ts';
 
 export const verifyUser = async (email: string) => {
   const checkUserExists = await verifyIfUserExists(email);

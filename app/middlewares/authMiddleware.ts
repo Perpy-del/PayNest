@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import env from '../../config/env.js';
+import env from '../../config/env.ts';
 
 import jwt from 'jsonwebtoken';
-import db from '../../config/database/db.js';
+import db from '../../config/database/db.ts';
 
 async function authenticateUser(
   request: Request | any,

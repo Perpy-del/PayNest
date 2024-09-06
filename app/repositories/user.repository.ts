@@ -1,5 +1,4 @@
-// import { v4 as uuidv4 } from 'uuid';
-import db from '../../config/database/db.js';
+import db from '../../config/database/db.ts';
 
 export const getUser = async (userId: string) => {
   const userData = await db('users')

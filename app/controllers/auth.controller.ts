@@ -5,15 +5,15 @@ import {
   resetPasswordRequest,
   resetPassword,
   verifyUser,
-} from '../services/auth.service.js';
+} from '../services/auth.service.ts';
 import { Request, Response } from 'express';
 import {
   loginUserValidation,
   registerUserValidation,
   resetPasswordValidation,
   verifyUserValidation,
-} from '../middlewares/validation.js';
-import { errorResponse, successResponse } from '../utils/responseHandler.js';
+} from '../middlewares/validation.ts';
+import { errorResponse, successResponse } from '../utils/responseHandler.ts';
 
 export const verifyUserController = async (
   request: Request,
