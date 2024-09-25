@@ -60,7 +60,6 @@ export const createUser = async (data: {
       .then(rows => rows[0]);
 
     await trx('accounts').insert({
-      id: uuidv4(),
       user_id: result.id,
       balance: 0.0,
       is_default: true,
