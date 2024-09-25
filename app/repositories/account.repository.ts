@@ -3,9 +3,9 @@ import dateConversion from '../utils/dateConversion.ts';
 
 export const getAccounts = async (
   userId: string,
-  balance: number,
-  start_date: string,
-  end_date: string
+  balance?: number,
+  start_date?: string,
+  end_date?: string
 ) => {
   const query = await db('accounts')
     .where({ user_id: userId })
@@ -38,3 +38,15 @@ export const createAccount = async (data: {
 
   return newAccount;
 };
+
+export const getAccount = async (accountId: string) => {
+  const [account] = await db('accounts').where({id: accountId}).returning('*');
+
+  return account;
+}
+
+export const updateAccountBalance = async (accountId: string | Number, newBalance: Number | String) => {
+  const [account] = await db('accounts').where({id: accountId}).update({balance: newBalance}).returning('*');
+
+  return account;
+}

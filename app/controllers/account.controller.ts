@@ -4,6 +4,7 @@ import { errorResponse, successResponse } from '../utils/responseHandler.ts';
 import {
   createNewAccount,
   getAllAccounts,
+  updateDepositTransaction,
 } from '../services/account.service.ts';
 
 export const createAccountController = async (
@@ -65,3 +66,20 @@ export const getAccountsController = async (
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
+
+export const verifyTransactionController = async (request: Request | any, response: Response) => {
+  try {
+    const userId = request.user.id;
+    const result = await updateDepositTransaction(request.params.accountId, userId)
+    return successResponse(
+      response,
+      200,
+      true,
+      'Verification successful',
+      result
+    );
+  } catch (error: any) {
+    console.log('Error verifying transaction: ', error.message);
+    return errorResponse(response, error.message, error.statusCode ?? 500);
+  }
+}

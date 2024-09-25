@@ -14,5 +14,24 @@ export const getUser = async (userId: string) => {
     .where('users.id', userId)
     .first();
 
-  return userData;  
+  return userData;
+};
+
+// Get user by their account ID
+
+export const getUserByAccountId = async (accountId: string | number | undefined) => {
+  const userData = await db('users')
+    .select(
+      'users.id as user_id',
+      'users.email',
+      'users.first_name',
+      'users.last_name',
+      'accounts.id as account_id',
+      'accounts.balance'
+    )
+    .innerJoin('accounts', 'users.id', '=', 'accounts.user_id')
+    .where('accounts.id', accountId) 
+    .first();
+
+  return userData;
 };
