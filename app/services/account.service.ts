@@ -1,4 +1,4 @@
-import https from 'https';
+import axios from 'axios';
 import env from '../../config/env.ts';
 import BadUserRequestError from '../errors/BadUserRequestError.ts';
 import {
@@ -11,7 +11,6 @@ import {
   getTransactionByUserId,
   updateTransaction,
 } from '../repositories/transaction.repository.ts';
-import { createTransfer } from '../repositories/transfer.repository.ts';
 
 export const createNewAccount = async (accountData: {
   userId: string;
@@ -52,41 +51,16 @@ export const getAllAccounts = async (
 };
 
 export const verifyPaystack = async (reference: string) => {
-  const options = {
-    hostname: 'api.paystack.co',
-    port: 443,
-    path: `/transaction/verify/${reference}`,
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${env.paystack_secret}`,
-    },
-  };
-
-  return new Promise((resolve, reject) => {
-    const req = https.request(options, res => {
-      let data = '';
-
-      res.on('data', chunk => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        try {
-          const parsedData = JSON.parse(data);
-          resolve(parsedData);
-        } catch (error) {
-          reject(error);
-        }
-      });
-    });
-
-    req.on('error', error => {
-      console.error('Error verifying paystack transaction: ', error);
-      reject(error);
-    });
-
-    req.end();
-  });
+  try {
+    const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
+      headers: {
+        Authorization: `Bearer ${env.paystack_secret}`,
+      },
+    })
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const updateDepositTransaction = async (

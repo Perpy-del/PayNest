@@ -1,13 +1,11 @@
-import https from 'https';
+import axios from 'axios';
 import env from '../../config/env.js';
 import { Transaction } from '../interfaces/transaction.interface.js';
 import { initTransaction } from '../repositories/transaction.repository.js';
 import BadUserRequestError from '../errors/BadUserRequestError.js';
 import {
-  getUser,
   getUserByAccountId,
 } from '../repositories/user.repository.js';
-import { getAccounts } from '../repositories/account.repository.js';
 
 export const initializeTransaction = async (email: string, amount: string) => {
   const params = JSON.stringify({
@@ -15,42 +13,53 @@ export const initializeTransaction = async (email: string, amount: string) => {
     amount,
   });
 
-  const options = {
-    hostname: 'api.paystack.co',
-    port: 443,
-    path: '/transaction/initialize',
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${env.paystack_secret}`,
-      'Content-Type': 'application/json',
-    },
-  };
+  try {
+    const response = await axios.post('https://api.paystack.co/transaction/initialize', params, {
+      headers: {
+        Authorization: `Bearer ${env.paystack_secret}`,
+        'Content-Type': 'application/json',
+      },
+    })
+  
+    return response.data;
+  } catch (error) {
+    console.log(error)
+  }
+  //   hostname: 'api.paystack.co',
+  //   port: 443,
+  //   path: '/transaction/initialize',
+  //   method: 'POST',
+  //   headers: {
+  //     Authorization: `Bearer ${env.paystack_secret}`,
+  //     'Content-Type': 'application/json',
+  //   },
+  // };
 
-  return new Promise((resolve, reject) => {
-    const req = https.request(options, res => {
-      let data = '';
+  // return new Promise((resolve, reject) => {
+  //   const req = https.request(options, res => {
+  //     let data = '';
 
-      res.on('data', chunk => {
-        data += chunk;
-      });
+  //     res.on('data', chunk => {
+  //       data += chunk;
+  //     });
 
-      res.on('end', () => {
-        try {
-          const parsedData = JSON.parse(data);
-          resolve(parsedData);
-        } catch (error) {
-          reject(error);
-        }
-      });
-    });
+  //     res.on('end', () => {
+  //       try {
+  //         const parsedData = JSON.parse(data);
+  //         resolve(parsedData);
+  //       } catch (error) {
+  //         reject(error);
+  //       }
+  //     });
+  //   });
 
-    req.on('error', error => {
-      reject(error);
-    });
+  //   req.on('error', error => {
+  //     reject(error);
+  //   });
 
-    req.write(params);
-    req.end();
-  });
+  //   req.write(params);
+  //   req.end();
+  // });
 };
 
 /**
