@@ -5,12 +5,15 @@ import {
   createAccount,
   getAccount,
   getAccounts,
-  updateAccountBalance,
+  updateDepositAccountBalance,
 } from '../repositories/account.repository.ts';
 import {
-  getTransactionByUserId,
+  getTransactionByReference,
+  // getTransactionByUserId,
   updateTransaction,
 } from '../repositories/transaction.repository.ts';
+import { Account } from '../interfaces/account.interface.ts';
+import Decimal from 'decimal.js';
 
 export const createNewAccount = async (accountData: {
   userId: string;
@@ -60,25 +63,25 @@ export const verifyPaystack = async (reference: string) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    throw new BadUserRequestError('Error verifying transaction')
   }
 };
 
 export const updateDepositTransaction = async (
   accountId: string,
-  userId: string
+  reference: string
 ) => {
   /* 
   Verify Reference: The system verifies the transaction reference with Paystack to ensure its validity and retrieves the transaction amount.
   */
-  const existingTxn = await getTransactionByUserId(userId);
- 
-  const reference = existingTxn.reference;
+  const existingTxn = await getTransactionByReference(reference);
 
   const paystackResponse: any = await verifyPaystack(reference);
 
   if (!paystackResponse.status || paystackResponse.data.status !== 'success') {
+    console.error('Paystack verification error:', paystackResponse);
     throw new BadUserRequestError(
-      'Deposit transaction failed. Please try again'
+      'Deposit transaction failed due to unsuccessful verification with Paystack. Please try again.'
     );
   }
 
@@ -95,20 +98,12 @@ export const updateDepositTransaction = async (
    * Process Transaction: If the status is valid, the system updates the transaction status and deposits the amount into the user's account using database increments.
    */
 
-  const account = await getAccount(accountId);
-
-  const currentBalance = parseFloat(account.balance);
-  const depositAmount = parseFloat(existingTxn.amount);
-  const newBalance = currentBalance + depositAmount;
-
-  const formattedBal = newBalance.toFixed(2);
-
   // Update the transaction details status to completed
-  const updatedAccount = await updateAccountBalance(accountId, formattedBal);
+  const updatedAccount: Account = await updateDepositAccountBalance(accountId, existingTxn.amount);
 
   const updatedTxn = await updateTransaction(existingTxn.id, {
     status: 'completed',
-    source: paystackResponse.data.channel,
+    source: paystackResponse.data.channel || 'unknown',
     type: 'credit',
   });
 
@@ -124,18 +119,4 @@ export const updateDepositTransaction = async (
   };
 
   return data;
-  /*
-​
-Sample Response:
-{
-  "success": true,
-  "message": "Deposit processed successfully",
-  "data": {
-    "transaction_id": "98765",
-    "status": "successful",
-    "amount": 100.00,
-    "account_balance": 1100.00
-  }
-}
-   */
 };

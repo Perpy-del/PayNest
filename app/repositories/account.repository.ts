@@ -40,13 +40,60 @@ export const createAccount = async (data: {
 };
 
 export const getAccount = async (accountId: string) => {
-  const [account] = await db('accounts').where({id: accountId}).returning('*');
+  const [account] = await db('accounts')
+    .where({ id: accountId })
+    .select('id', 'user_id', 'balance', 'created_at')
+    .first();
+
+  if (!account) {
+    throw new Error(`Account with ID ${accountId} not found`);
+  }
 
   return account;
+};
+
+export const updateDepositAccountBalance = async (accountId: string | number, amount: number) => {
+  let updatedAccount;
+
+  await db.transaction(async (trx) => {
+    const [account] = await trx('accounts')
+      .where({ id: accountId })
+      .increment('balance', amount)
+      .returning('*');
+
+    if (!account) {
+      throw new Error(`Account with ID ${accountId} not found`);
+    }
+
+    updatedAccount = account;
+  });
+
+  if (!updatedAccount) {
+    throw new Error('Failed to update account balance');
+  }
+
+  return updatedAccount;
 }
 
-export const updateAccountBalance = async (accountId: string | Number, newBalance: Number | String) => {
-  const [account] = await db('accounts').where({id: accountId}).update({balance: newBalance}).returning('*');
+export const updateWithdrawalAccountBalance = async (accountId: string | number, amount: number) => {
+  let updatedAccount;
 
-  return account;
+  await db.transaction(async (trx) => {
+    const [account] = await trx('accounts')
+      .where({ id: accountId })
+      .decrement('balance', amount)
+      .returning('*');
+
+    if (!account) {
+      throw new Error(`Account with ID ${accountId} not found`);
+    }
+
+    updatedAccount = account;
+  });
+
+  if (!updatedAccount) {
+    throw new Error('Failed to update account balance');
+  }
+
+  return updatedAccount;
 }

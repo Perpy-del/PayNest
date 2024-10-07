@@ -28,7 +28,15 @@ export const getTransactionByAccountId = async (accountId: string) => {
   return transaction;
 };
 
-export const getTransactionByUserId = async (userId: string) => {
+export const getAllUserTransactions = async (userId?: string) => {
+  const transaction = await db('transactions')
+    .where('transactions.user_id', userId)
+    .orderBy('created_at', 'desc');
+
+  return transaction;
+};
+
+export const getTransactionByUserId = async (userId?: string) => {
   const transaction = await db('transactions')
     .where('transactions.user_id', userId)
     .orderBy('created_at', 'desc')
@@ -37,7 +45,15 @@ export const getTransactionByUserId = async (userId: string) => {
   return transaction;
 };
 
-export const updateTransaction = async (txnId: string, updateData: any) => {
+export const getTransactionByReference = async (reference?: string) => {
+  const transaction = await db('transactions')
+    .where('transactions.reference', reference)
+    .first();
+
+  return transaction;
+};
+
+export const updateTransaction = async (txnId: string, updateData: Transaction) => {
   const [updatedTxn] = await db('transactions')
     .where('id', txnId)
     .update(updateData)

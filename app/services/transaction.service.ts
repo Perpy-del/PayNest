@@ -70,8 +70,8 @@ export const initializeTransaction = async (email: string, amount: string) => {
  */
 
 export const requestInitTransaction = async (
-  userId: string,
-  data: Transaction
+  data: Transaction,
+  userId?: string
 ) => {
   const accountData = await getUserByAccountId(data.accountId);
 

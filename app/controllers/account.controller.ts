@@ -67,10 +67,9 @@ export const getAccountsController = async (
   }
 };
 
-export const verifyTransactionController = async (request: Request | any, response: Response) => {
+export const verifyTransactionController = async (request: Request, response: Response) => {
   try {
-    const userId = request.user.id;
-    const result = await updateDepositTransaction(request.params.accountId, userId)
+    const result = await updateDepositTransaction(request.params.accountId, request.body.reference)
     return successResponse(
       response,
       200,

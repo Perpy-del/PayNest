@@ -3,11 +3,11 @@ export interface Transaction {
   account_id?: string | number | undefined;
   transactionId?: string;
   accountId?: string | number;
-  amount: string | number;
+  amount?: string | number;
   type?: string;
   status?: string;
   description?: string;
-  reference: string;
+  reference?: string;
   transactionDate?: string | Date;
   source?: string;
   created_at?: string;
