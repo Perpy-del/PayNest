@@ -9,11 +9,9 @@ import {
 } from '../repositories/account.repository.ts';
 import {
   getTransactionByReference,
-  // getTransactionByUserId,
   updateTransaction,
 } from '../repositories/transaction.repository.ts';
 import { Account } from '../interfaces/account.interface.ts';
-import Decimal from 'decimal.js';
 
 export const createNewAccount = async (accountData: {
   userId: string;
