@@ -1,13 +1,13 @@
 import axios from 'axios';
 import env from '../../config/env.js';
-import { Transaction } from '../interfaces/transaction.interface.js';
+import {Transaction, TransactionDTO} from '../interfaces/transaction.interface.js';
 import { initTransaction } from '../repositories/transaction.repository.js';
 import BadUserRequestError from '../errors/BadUserRequestError.js';
 import {
   getUserByAccountId,
 } from '../repositories/user.repository.js';
 
-export const initializeTransaction = async (email: string, amount: string) => {
+export const initializeTransaction = async (email: string, amount: number) => {
   const params = JSON.stringify({
     email,
     amount,
@@ -20,7 +20,7 @@ export const initializeTransaction = async (email: string, amount: string) => {
         'Content-Type': 'application/json',
       },
     })
-  
+
     return response.data;
   } catch (error) {
     console.log(error)
@@ -70,31 +70,30 @@ export const initializeTransaction = async (email: string, amount: string) => {
  */
 
 export const requestInitTransaction = async (
-  data: Transaction,
+  data: TransactionDTO,
   userId?: string
 ) => {
   const accountData = await getUserByAccountId(data.accountId);
 
-  const amountInCents = Math.round(parseFloat(data.amount as string) * 100);
+  const amountInCents = data.amount * 100
 
   const result: any = await initializeTransaction(
     accountData.email,
-    amountInCents.toString()
+    amountInCents
   );
 
   if (!result?.status) {
     throw new BadUserRequestError('Error initializing transaction');
   }
 
-  typeof data.amount === 'string' ? Number(data.amount) : data.amount;
-
   const txnData = {
     amount: data.amount,
     description: data.description,
     reference: result.data.reference,
-    transactionDate: new Date(),
+    transaction_date: new Date(),
     user_id: userId,
     account_id: data.accountId,
+    type: "credit"
   };
 
   const transaction = await initTransaction(txnData);

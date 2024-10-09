@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { LoginUserValidationType, RegisterUserValidationType } from '../interfaces/auth.interface';
-import { Transaction } from '../interfaces/transaction.interface';
+import {Transaction, TransactionDTO} from '../interfaces/transaction.interface';
 
 export function verifyUserValidation(data: {email: string}) {
   const schema = Joi.object({
@@ -49,12 +49,11 @@ export function createAccountValidation(data: {balance: number; isDefault: boole
   return schema.validate(data);
 }
 
-export function initializeTransactionValidation(data: Transaction) {
+export function initializeTransactionValidation(data: TransactionDTO) {
   const schema = Joi.object({
     amount: Joi.alternatives().try(Joi.number().precision(2), Joi.string()).required(),
     // type: Joi.string().required(),
     description: Joi.string().optional().trim(),
-    source: Joi.string().optional().trim(),
     status: Joi.string().optional().trim(),
     accountId: Joi.alternatives().try(Joi.number(), Joi.string()).required()
   })

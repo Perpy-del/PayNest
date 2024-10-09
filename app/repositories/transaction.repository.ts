@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import db from '../../config/database/db.ts';
 import { Transaction } from '../interfaces/transaction.interface.ts';
 
-export const initTransaction = async (data: Transaction) => {
+export const initTransaction = async (data: Partial<Transaction>) => {
   const [transaction] = await db('transactions')
     .insert({
       id: uuidv4(),
@@ -10,7 +10,7 @@ export const initTransaction = async (data: Transaction) => {
       type: data.type,
       description: data.description,
       reference: data.reference,
-      transaction_date: data.transactionDate,
+      transaction_date: data.transaction_date,
       source: data.source,
       user_id: data.user_id,
       account_id: data.account_id,
@@ -53,7 +53,7 @@ export const getTransactionByReference = async (reference?: string) => {
   return transaction;
 };
 
-export const updateTransaction = async (txnId: string, updateData: Transaction) => {
+export const updateTransaction = async (txnId: string, updateData: Partial<Transaction>) => {
   const [updatedTxn] = await db('transactions')
     .where('id', txnId)
     .update(updateData)

@@ -69,7 +69,7 @@ export const updateDepositTransaction = async (
   accountId: string,
   reference: string
 ) => {
-  /* 
+  /*
   Verify Reference: The system verifies the transaction reference with Paystack to ensure its validity and retrieves the transaction amount.
   */
   const existingTxn = await getTransactionByReference(reference);
@@ -95,6 +95,12 @@ export const updateDepositTransaction = async (
   /**
    * Process Transaction: If the status is valid, the system updates the transaction status and deposits the amount into the user's account using database increments.
    */
+
+  if(existingTxn.amount != (paystackResponse.data.amount/100)){
+    throw new BadUserRequestError(
+      'Paystack amount should be equal to db amount'
+    );
+  }
 
   // Update the transaction details status to completed
   const updatedAccount: Account = await updateDepositAccountBalance(accountId, existingTxn.amount);
