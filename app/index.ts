@@ -15,10 +15,10 @@ app.use(logger('combined', { stream: rotatingFileStream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/api', apiRouter)
+app.use('/api', apiRouter);
 
 app.get('/', (req, res) => {
-    res.send('Welcome to PayNest App...😀')
-})
+  res.send('Welcome to PayNest App...😀');
+});
 
 export default app;

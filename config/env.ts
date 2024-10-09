@@ -20,4 +20,8 @@ export default {
   twilio_token: process.env.TWILIO_AUTH_TOKEN,
   twilio_account: process.env.TWILIO_ACCOUNT_SID,
   twilio_sender: process.env.TWILIO_SENDER_NUMBER,
+
+  // PAYSTACK PARAMETERS
+  paystack_secret: process.env.PAYSTACK_SECRET_KEY,
+  paystack_pkey: process.env.PAYSTACK_PUBLIC_KEY,
 };

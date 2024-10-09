@@ -21,3 +21,4 @@ export const getUserProfile: any = async (id: string) => {
 
   return data;
 };
+
