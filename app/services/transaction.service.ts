@@ -25,41 +25,6 @@ export const initializeTransaction = async (email: string, amount: number) => {
   } catch (error) {
     console.log(error)
   }
-  //   hostname: 'api.paystack.co',
-  //   port: 443,
-  //   path: '/transaction/initialize',
-  //   method: 'POST',
-  //   headers: {
-  //     Authorization: `Bearer ${env.paystack_secret}`,
-  //     'Content-Type': 'application/json',
-  //   },
-  // };
-
-  // return new Promise((resolve, reject) => {
-  //   const req = https.request(options, res => {
-  //     let data = '';
-
-  //     res.on('data', chunk => {
-  //       data += chunk;
-  //     });
-
-  //     res.on('end', () => {
-  //       try {
-  //         const parsedData = JSON.parse(data);
-  //         resolve(parsedData);
-  //       } catch (error) {
-  //         reject(error);
-  //       }
-  //     });
-  //   });
-
-  //   req.on('error', error => {
-  //     reject(error);
-  //   });
-
-  //   req.write(params);
-  //   req.end();
-  // });
 };
 
 /**

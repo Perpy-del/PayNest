@@ -3,7 +3,6 @@ import env from '../../config/env.ts';
 import BadUserRequestError from '../errors/BadUserRequestError.ts';
 import {
   createAccount,
-  getAccount,
   getAccounts,
   updateDepositAccountBalance,
 } from '../repositories/account.repository.ts';
