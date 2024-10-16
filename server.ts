@@ -1,16 +1,14 @@
-#!/usr/bin/env node
+import env from './config/env'
 
-import env from './config/env.ts';
+import app from './app/index'
 
-import app from './app/index.ts';
+import dotenv from 'dotenv'
 
-import dotenv from 'dotenv';
+dotenv.config()
 
-dotenv.config();
-
-const port = env.port || '3000';
-app.set('port', port);
+const port = env.port || '3000'
+app.set('port', port)
 
 app.listen(port, () => {
-  console.log(`PayNest app listening on PORT:${port}`);
-});
+  console.log(`PayNest app listening on PORT:${port}`)
+})

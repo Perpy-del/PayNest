@@ -1,8 +1,5 @@
-import knex from "knex";
-import dotenv from 'dotenv';
-import config from './knexfile.js';
+import knex from 'knex'
+import config from './knexfile'
 
-dotenv.config();
-
-const db = knex(config);
-export default db;
+const db = knex(config)
+export default db

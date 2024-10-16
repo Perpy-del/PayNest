@@ -1,11 +1,9 @@
 import axios from 'axios';
-import env from '../../config/env.js';
-import {Transaction, TransactionDTO} from '../interfaces/transaction.interface.js';
-import { initTransaction } from '../repositories/transaction.repository.js';
-import BadUserRequestError from '../errors/BadUserRequestError.js';
-import {
-  getUserByAccountId,
-} from '../repositories/user.repository.js';
+import env from '../../config/env';
+import { Transaction, TransactionDTO } from '../interfaces/transaction.interface';
+import { initTransaction } from '../repositories/transaction.repository';
+import BadUserRequestError from '../errors/BadUserRequestError';
+import { getUserByAccountId } from '../repositories/user.repository';
 
 export const initializeTransaction = async (email: string, amount: number) => {
   const params = JSON.stringify({
@@ -19,11 +17,11 @@ export const initializeTransaction = async (email: string, amount: number) => {
         Authorization: `Bearer ${env.paystack_secret}`,
         'Content-Type': 'application/json',
       },
-    })
+    });
 
     return response.data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
@@ -34,18 +32,12 @@ export const initializeTransaction = async (email: string, amount: number) => {
  * @returns transaction data {transaction_id, reference, status, authorization_url}
  */
 
-export const requestInitTransaction = async (
-  data: TransactionDTO,
-  userId?: string
-) => {
+export const requestInitTransaction = async (data: TransactionDTO, userId?: string) => {
   const accountData = await getUserByAccountId(data.accountId);
 
-  const amountInCents = data.amount * 100
+  const amountInCents = data.amount * 100;
 
-  const result: any = await initializeTransaction(
-    accountData.email,
-    amountInCents
-  );
+  const result: any = await initializeTransaction(accountData.email, amountInCents);
 
   if (!result?.status) {
     throw new BadUserRequestError('Error initializing transaction');
@@ -58,7 +50,7 @@ export const requestInitTransaction = async (
     transaction_date: new Date(),
     user_id: userId,
     account_id: data.accountId,
-    type: "credit"
+    type: 'credit',
   };
 
   const transaction = await initTransaction(txnData);

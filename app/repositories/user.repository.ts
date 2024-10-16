@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
-import db from '../../config/database/db.ts';
-import NotFoundError from '../errors/NotFoundError.ts';
+import db from '../../config/database/db';
+import NotFoundError from '../errors/NotFoundError';
 
 const getUserQuery = (db: Knex) =>
   db('users')
@@ -10,7 +10,7 @@ const getUserQuery = (db: Knex) =>
       'users.first_name',
       'users.last_name',
       'accounts.id as account_id',
-      'accounts.balance'
+      'accounts.balance',
     )
     .innerJoin('accounts', 'users.id', '=', 'accounts.user_id');
 

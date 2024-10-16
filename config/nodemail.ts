@@ -1,7 +1,5 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
-import env from './env.ts';
-dotenv.config();
+import nodemailer from 'nodemailer'
+import env from './env'
 
 const transporter = nodemailer.createTransport({
   service: env.nodemailer_service,
@@ -9,6 +7,6 @@ const transporter = nodemailer.createTransport({
     user: env.nodemailer_user,
     pass: env.nodemailer_pass,
   },
-});
+})
 
-export default transporter;
+export default transporter

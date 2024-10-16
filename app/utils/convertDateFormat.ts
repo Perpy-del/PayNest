@@ -1,4 +1,4 @@
-import { DateOptionsType } from "../interfaces/auth.interface";
+import { DateOptionsType } from '../interfaces/auth.interface';
 
 function convertDateFormat(dateString: string): string {
   // Parse the date string into a Date object

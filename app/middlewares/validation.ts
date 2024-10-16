@@ -1,14 +1,14 @@
 import Joi from 'joi';
 import { LoginUserValidationType, RegisterUserValidationType } from '../interfaces/auth.interface';
-import {Transaction, TransactionDTO} from '../interfaces/transaction.interface';
+import { Transaction, TransactionDTO } from '../interfaces/transaction.interface';
 
-export function verifyUserValidation(data: {email: string}) {
+export function verifyUserValidation(data: { email: string }) {
   const schema = Joi.object({
-    email: Joi.string().email().required().trim()
+    email: Joi.string().email().required().trim(),
   });
 
   return schema.validate(data);
-};
+}
 
 export function registerUserValidation(data: RegisterUserValidationType) {
   const schema = Joi.object({
@@ -30,21 +30,26 @@ export function loginUserValidation(data: LoginUserValidationType) {
   return schema.validate(data);
 }
 
-export function resetPasswordValidation(data: {email: string; otp: string; newPassword: string; confirmPassword: string}) {
+export function resetPasswordValidation(data: {
+  email: string;
+  otp: string;
+  newPassword: string;
+  confirmPassword: string;
+}) {
   const schema = Joi.object({
     email: Joi.string().email().required().trim(),
     otp: Joi.string().required().trim(),
     newPassword: Joi.string().required().trim(),
     confirmPassword: Joi.string().required().trim(),
-  })
+  });
 
   return schema.validate(data);
 }
 
-export function createAccountValidation(data: {balance: number; isDefault: boolean}) {
+export function createAccountValidation(data: { balance: number; isDefault: boolean }) {
   const schema = Joi.object({
     balance: Joi.number().precision(2).required(),
-  })
+  });
 
   return schema.validate(data);
 }
@@ -55,8 +60,8 @@ export function initializeTransactionValidation(data: TransactionDTO) {
     // type: Joi.string().required(),
     description: Joi.string().optional().trim(),
     status: Joi.string().optional().trim(),
-    accountId: Joi.alternatives().try(Joi.number(), Joi.string()).required()
-  })
+    accountId: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
+  });
 
   return schema.validate(data);
 }

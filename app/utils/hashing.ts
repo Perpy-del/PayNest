@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import env from '../../config/env.ts';
+import env from '../../config/env';
 
 async function hashPassword(password: string) {
   const saltRound = Number(env.salt_round);

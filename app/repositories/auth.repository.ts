@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import db from '../../config/database/db.ts';
+import db from '../../config/database/db';
 
 export const verifyIfUserExists = async (email: string) => {
   const existingUser = await db('users').where({ email: email }).first();
@@ -7,11 +7,7 @@ export const verifyIfUserExists = async (email: string) => {
   return existingUser;
 };
 
-export const createNewOTP = async (data: {
-  otp: string | number;
-  email: string;
-  expires_at: Date | string;
-}) => {
+export const createNewOTP = async (data: { otp: string | number; email: string; expires_at: Date | string }) => {
   const otpDetails = await db('otps').insert({
     id: uuidv4(),
     otp: data.otp,
@@ -28,7 +24,7 @@ export const verifyTokenValidity = async (email: string) => {
     .andWhere('is_used', false)
     .orderBy('expires_at', 'desc')
     .returning(['otp', 'email', 'expires_at', 'is_used'])
-    .then(row => row[0]);
+    .then((row) => row[0]);
 
   return verifyToken;
 };
@@ -57,7 +53,7 @@ export const createUser = async (data: {
         password: data.password,
       })
       .returning('*')
-      .then(rows => rows[0]);
+      .then((rows) => rows[0]);
 
     await trx('accounts').insert({
       user_id: result.id,
@@ -73,13 +69,8 @@ export const createUser = async (data: {
   }
 };
 
-export const changePassword = async (data: {
-  password: string;
-  email: string;
-}) => {
-  const newPass = await db('users')
-    .where({ email: data.email })
-    .update({ password: data.password });
+export const changePassword = async (data: { password: string; email: string }) => {
+  const newPass = await db('users').where({ email: data.email }).update({ password: data.password });
 
   return newPass;
 };

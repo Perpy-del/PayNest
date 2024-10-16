@@ -1,16 +1,9 @@
-import { createAccountValidation } from '../middlewares/validation.ts';
+import { createAccountValidation } from '../middlewares/validation';
 import { Request, Response } from 'express';
-import { errorResponse, successResponse } from '../utils/responseHandler.ts';
-import {
-  createNewAccount,
-  getAllAccounts,
-  updateDepositTransaction,
-} from '../services/account.service.ts';
+import { errorResponse, successResponse } from '../utils/responseHandler';
+import { createNewAccount, getAllAccounts, updateDepositTransaction } from '../services/account.service';
 
-export const createAccountController = async (
-  request: Request | any,
-  response: Response
-) => {
+export const createAccountController = async (request: Request | any, response: Response) => {
   try {
     const { error } = createAccountValidation(request.body);
 
@@ -25,42 +18,22 @@ export const createAccountController = async (
       balance,
     });
 
-    return successResponse(
-      response,
-      201,
-      true,
-      'Account created successfully',
-      newAccount
-    );
+    return successResponse(response, 201, true, 'Account created successfully', newAccount);
   } catch (error: any) {
     console.log('Error creating account: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
 };
 
-export const getAccountsController = async (
-  request: Request | any,
-  response: Response
-) => {
+export const getAccountsController = async (request: Request | any, response: Response) => {
   try {
     const userId = request.user?.id;
 
     const { balance, start_date, end_date } = request.query;
 
-    const accountsResult = await getAllAccounts(
-      userId,
-      balance,
-      start_date,
-      end_date
-    );
+    const accountsResult = await getAllAccounts(userId, balance, start_date, end_date);
 
-    return successResponse(
-      response,
-      200,
-      true,
-      'Accounts retrieved successfully',
-      accountsResult
-    );
+    return successResponse(response, 200, true, 'Accounts retrieved successfully', accountsResult);
   } catch (error: any) {
     console.log('Error retrieving accounts: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
@@ -69,16 +42,10 @@ export const getAccountsController = async (
 
 export const verifyTransactionController = async (request: Request, response: Response) => {
   try {
-    const result = await updateDepositTransaction(request.params.accountId, request.body.reference)
-    return successResponse(
-      response,
-      200,
-      true,
-      'Verification successful',
-      result
-    );
+    const result = await updateDepositTransaction(request.params.accountId, request.body.reference);
+    return successResponse(response, 200, true, 'Verification successful', result);
   } catch (error: any) {
     console.log('Error verifying transaction: ', error.message);
     return errorResponse(response, error.message, error.statusCode ?? 500);
   }
-}
+};

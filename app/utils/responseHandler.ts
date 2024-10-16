@@ -1,6 +1,12 @@
-import { Response } from "express";
+import { Response } from 'express';
 
-export const successResponse = (res: Response, statusCode: number, success: boolean, message: string, data: Record<string, unknown> | null = {}) => {
+export const successResponse = (
+  res: Response,
+  statusCode: number,
+  success: boolean,
+  message: string,
+  data: Record<string, unknown> | null = {},
+) => {
   res.status(statusCode).json({
     success,
     message,

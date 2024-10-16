@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import db from '../../config/database/db.ts';
-import { Transaction } from '../interfaces/transaction.interface.ts';
+import db from '../../config/database/db';
+import { Transaction } from '../interfaces/transaction.interface';
 
 export const initTransaction = async (data: Partial<Transaction>) => {
   const [transaction] = await db('transactions')
@@ -21,17 +21,13 @@ export const initTransaction = async (data: Partial<Transaction>) => {
 };
 
 export const getTransactionByAccountId = async (accountId: string) => {
-  const transaction = await db('transactions')
-    .where('transactions.account_id', accountId)
-    .first();
+  const transaction = await db('transactions').where('transactions.account_id', accountId).first();
 
   return transaction;
 };
 
 export const getAllUserTransactions = async (userId?: string) => {
-  const transaction = await db('transactions')
-    .where('transactions.user_id', userId)
-    .orderBy('created_at', 'desc');
+  const transaction = await db('transactions').where('transactions.user_id', userId).orderBy('created_at', 'desc');
 
   return transaction;
 };
@@ -46,18 +42,13 @@ export const getTransactionByUserId = async (userId?: string) => {
 };
 
 export const getTransactionByReference = async (reference?: string) => {
-  const transaction = await db('transactions')
-    .where('transactions.reference', reference)
-    .first();
+  const transaction = await db('transactions').where('transactions.reference', reference).first();
 
   return transaction;
 };
 
 export const updateTransaction = async (txnId: string, updateData: Partial<Transaction>) => {
-  const [updatedTxn] = await db('transactions')
-    .where('id', txnId)
-    .update(updateData)
-    .returning('*');
+  const [updatedTxn] = await db('transactions').where('id', txnId).update(updateData).returning('*');
 
   return updatedTxn;
 };

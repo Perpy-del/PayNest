@@ -1,5 +1,5 @@
 import twilio from 'twilio';
-import env from '../../config/env.ts';
+import env from '../../config/env';
 
 export const verifyUser = async (phone_number: string, token: string) => {
   try {

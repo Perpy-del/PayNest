@@ -1,14 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import env from '../../config/env.ts';
+import env from '../../config/env';
 
 import jwt from 'jsonwebtoken';
-import db from '../../config/database/db.ts';
+import db from '../../config/database/db';
 
-async function authenticateUser(
-  request: Request | any,
-  response: Response,
-  next: NextFunction
-) {
+async function authenticateUser(request: Request | any, response: Response, next: NextFunction) {
   const authorizationHeader = request.headers.authorization;
 
   if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {

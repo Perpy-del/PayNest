@@ -1,5 +1,5 @@
-import { getUser } from '../repositories/user.repository.ts';
-import BadUserRequestError from '../errors/BadUserRequestError.ts';
+import { getUser } from '../repositories/user.repository';
+import BadUserRequestError from '../errors/BadUserRequestError';
 
 export const getUserProfile: any = async (id: string) => {
   const existingUserProfile = await getUser(id);
@@ -21,4 +21,3 @@ export const getUserProfile: any = async (id: string) => {
 
   return data;
 };
-
