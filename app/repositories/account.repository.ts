@@ -1,15 +1,10 @@
-import db from '../../config/database/db.ts';
-import dateConversion from '../utils/dateConversion.ts';
+import db from '../../config/database/db';
+import dateConversion from '../utils/dateConversion';
 
-export const getAccounts = async (
-  userId: string,
-  balance?: number,
-  start_date?: string,
-  end_date?: string
-) => {
+export const getAccounts = async (userId: string, balance?: number, start_date?: string, end_date?: string) => {
   const query = await db('accounts')
     .where({ user_id: userId })
-    .modify(queryBuilder => {
+    .modify((queryBuilder) => {
       if (balance) {
         queryBuilder.where('balance', '>', balance);
       }
@@ -25,10 +20,7 @@ export const getAccounts = async (
   return query;
 };
 
-export const createAccount = async (data: {
-  userId: string;
-  balance: number;
-}) => {
+export const createAccount = async (data: { userId: string; balance: number }) => {
   const [newAccount] = await db('accounts')
     .insert({
       user_id: data.userId,
@@ -56,10 +48,7 @@ export const updateDepositAccountBalance = async (accountId: string | number, am
   let updatedAccount;
 
   await db.transaction(async (trx) => {
-    const [account] = await trx('accounts')
-      .where({ id: accountId })
-      .increment('balance', amount)
-      .returning('*');
+    const [account] = await trx('accounts').where({ id: accountId }).increment('balance', amount).returning('*');
 
     if (!account) {
       throw new Error(`Account with ID ${accountId} not found`);
@@ -73,16 +62,13 @@ export const updateDepositAccountBalance = async (accountId: string | number, am
   }
 
   return updatedAccount;
-}
+};
 
 export const updateWithdrawalAccountBalance = async (accountId: string | number, amount: number) => {
   let updatedAccount;
 
   await db.transaction(async (trx) => {
-    const [account] = await trx('accounts')
-      .where({ id: accountId })
-      .decrement('balance', amount)
-      .returning('*');
+    const [account] = await trx('accounts').where({ id: accountId }).decrement('balance', amount).returning('*');
 
     if (!account) {
       throw new Error(`Account with ID ${accountId} not found`);
@@ -96,4 +82,4 @@ export const updateWithdrawalAccountBalance = async (accountId: string | number,
   }
 
   return updatedAccount;
-}
+};

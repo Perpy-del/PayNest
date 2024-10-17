@@ -1,6 +1,6 @@
 {
-  "watch": ["app", "server.js"],
+  "watch": ["app", "server.ts"],
   "ext": "ts,js,json",
   "ignore": ["dist"],
-  "exec": "node --loader ts-node/esm server.js"
+  "exec": "ts-node server.ts"
 }

@@ -13,10 +13,10 @@ export const generateRandomToken = (): Promise<PasswordTokenType> => {
       resolve({ passwordToken, expiryTime });
     });
   });
-}
+};
 
 export const checkIfTokenHasExpired = (expiryTime: Date | string): boolean => {
   const now = new Date();
 
   return isAfter(now, expiryTime);
-}
+};

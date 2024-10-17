@@ -1,11 +1,8 @@
-import AuthenticationError from '../errors/AuthenticationError.ts';
-import sendEmail from '../utils/sendEmail.ts';
-import { hashPassword, compareHashPassword } from '../utils/hashing.ts';
-import convertDateFormat from '../utils/convertDateFormat.ts';
-import {
-  checkIfTokenHasExpired,
-  generateRandomToken,
-} from '../utils/generateToken.ts';
+import AuthenticationError from '../errors/AuthenticationError';
+import sendEmail from '../utils/sendEmail';
+import { hashPassword, compareHashPassword } from '../utils/hashing';
+import convertDateFormat from '../utils/convertDateFormat';
+import { checkIfTokenHasExpired, generateRandomToken } from '../utils/generateToken';
 import {
   changePassword,
   createNewOTP,
@@ -13,14 +10,11 @@ import {
   updateTokenToUsed,
   verifyIfUserExists,
   verifyTokenValidity,
-} from '../repositories/auth.repository.ts';
-import { jwtAuthToken } from '../middlewares/authToken.ts';
-import {
-  LoginUserValidationType,
-  PasswordTokenType,
-} from '../interfaces/auth.interface.ts';
-import NotFoundError from '../errors/NotFoundError.ts';
-import BadUserRequestError from '../errors/BadUserRequestError.ts';
+} from '../repositories/auth.repository';
+import { jwtAuthToken } from '../middlewares/authToken';
+import { LoginUserValidationType, PasswordTokenType } from '../interfaces/auth.interface';
+import NotFoundError from '../errors/NotFoundError';
+import BadUserRequestError from '../errors/BadUserRequestError';
 
 export const verifyUser = async (email: string) => {
   const checkUserExists = await verifyIfUserExists(email);
@@ -78,9 +72,7 @@ export const createNewUser = async (userData: {
   }
 
   if (userData.otp !== verifyToken.otp) {
-    throw new AuthenticationError(
-      'Invalid Token. Please confirm or request for another token.'
-    );
+    throw new AuthenticationError('Invalid Token. Please confirm or request for another token.');
   }
 
   const passwordHash = await hashPassword(userData.password);
@@ -113,15 +105,10 @@ export const createNewUser = async (userData: {
 
   await updateTokenToUsed(newUser.email);
 
-  await sendEmail(
-    newUser.email,
-    'PayNest Account Verified Successfully',
-    'welcomeMessage',
-    {
-      firstName: userData.firstName,
-      date: convertDateFormat(newUser.created_at as string),
-    }
-  );
+  await sendEmail(newUser.email, 'PayNest Account Verified Successfully', 'welcomeMessage', {
+    firstName: userData.firstName,
+    date: convertDateFormat(newUser.created_at as string),
+  });
 
   return result;
 };
@@ -133,10 +120,7 @@ export const loginUser = async (data: LoginUserValidationType) => {
     throw new AuthenticationError('User credentials do not match our records.');
   }
 
-  const comparePassword = await compareHashPassword(
-    data.password,
-    checkUserExists.password
-  );
+  const comparePassword = await compareHashPassword(data.password, checkUserExists.password);
 
   if (!comparePassword) {
     throw new AuthenticationError('User credentials do not match our records.');
@@ -151,11 +135,8 @@ export const loginUser = async (data: LoginUserValidationType) => {
   return userData;
 };
 
-export const getNewPassword = async (user: any, data?: {currentPassword: string; newPassword: string}) => {
-  const comparePassword = await compareHashPassword(
-    data?.currentPassword as string,
-    user.password
-  );
+export const getNewPassword = async (user: any, data?: { currentPassword: string; newPassword: string }) => {
+  const comparePassword = await compareHashPassword(data?.currentPassword as string, user.password);
 
   if (!comparePassword) {
     throw new AuthenticationError('Password is incorrect. Please confirm your password');
@@ -166,12 +147,12 @@ export const getNewPassword = async (user: any, data?: {currentPassword: string;
   const passwordData = {
     password: passwordHash,
     email: user.email,
-  }
+  };
 
   await changePassword(passwordData);
 
   return null;
-}
+};
 
 export const resetPasswordRequest = async (email: string) => {
   const existingUser = await verifyIfUserExists(email);
@@ -199,9 +180,14 @@ export const resetPasswordRequest = async (email: string) => {
   await createNewOTP(otpData);
 
   return null;
-}
+};
 
-export const resetPassword = async (resetPasswordData: {otp: string | number; newPassword: string; confirmPassword: string; email: string}) => {
+export const resetPassword = async (resetPasswordData: {
+  otp: string | number;
+  newPassword: string;
+  confirmPassword: string;
+  email: string;
+}) => {
   const checkUserExists = await verifyIfUserExists(resetPasswordData.email);
 
   if (!checkUserExists) {
@@ -223,9 +209,7 @@ export const resetPassword = async (resetPasswordData: {otp: string | number; ne
   }
 
   if (resetPasswordData.otp !== verifyToken.otp) {
-    throw new AuthenticationError(
-      'Invalid Token. Please confirm or request for another token.'
-    );
+    throw new AuthenticationError('Invalid Token. Please confirm or request for another token.');
   }
 
   if (resetPasswordData.newPassword !== resetPasswordData.confirmPassword) {
@@ -237,11 +221,11 @@ export const resetPassword = async (resetPasswordData: {otp: string | number; ne
   const passwordData = {
     password: passwordHash,
     email: resetPasswordData.email,
-  }
+  };
 
   await changePassword(passwordData);
 
   await updateTokenToUsed(resetPasswordData.email);
 
   return null;
-}
+};

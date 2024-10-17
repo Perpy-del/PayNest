@@ -1,21 +1,11 @@
 import axios from 'axios';
-import env from '../../config/env.ts';
-import BadUserRequestError from '../errors/BadUserRequestError.ts';
-import {
-  createAccount,
-  getAccounts,
-  updateDepositAccountBalance,
-} from '../repositories/account.repository.ts';
-import {
-  getTransactionByReference,
-  updateTransaction,
-} from '../repositories/transaction.repository.ts';
-import { Account } from '../interfaces/account.interface.ts';
+import env from '../../config/env';
+import BadUserRequestError from '../errors/BadUserRequestError';
+import { createAccount, getAccounts, updateDepositAccountBalance } from '../repositories/account.repository';
+import { getTransactionByReference, updateTransaction } from '../repositories/transaction.repository';
+import { Account } from '../interfaces/account.interface';
 
-export const createNewAccount = async (accountData: {
-  userId: string;
-  balance: number;
-}) => {
+export const createNewAccount = async (accountData: { userId: string; balance: number }) => {
   if (accountData.balance == null || accountData.balance < 0) {
     throw new BadUserRequestError('Invalid balance amount');
   }
@@ -28,18 +18,8 @@ export const createNewAccount = async (accountData: {
   return result;
 };
 
-export const getAllAccounts = async (
-  userId: string,
-  balance: number,
-  start_date: string,
-  end_date: string
-) => {
-  const accountResults = await getAccounts(
-    userId,
-    balance,
-    start_date,
-    end_date
-  );
+export const getAllAccounts = async (userId: string, balance: number, start_date: string, end_date: string) => {
+  const accountResults = await getAccounts(userId, balance, start_date, end_date);
 
   const formattedResult = accountResults.map((account: any) => ({
     account_id: account.account_id,
@@ -56,18 +36,15 @@ export const verifyPaystack = async (reference: string) => {
       headers: {
         Authorization: `Bearer ${env.paystack_secret}`,
       },
-    })
+    });
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new BadUserRequestError('Error verifying transaction')
+    throw new BadUserRequestError('Error verifying transaction');
   }
 };
 
-export const updateDepositTransaction = async (
-  accountId: string,
-  reference: string
-) => {
+export const updateDepositTransaction = async (accountId: string, reference: string) => {
   /*
   Verify Reference: The system verifies the transaction reference with Paystack to ensure its validity and retrieves the transaction amount.
   */
@@ -78,7 +55,7 @@ export const updateDepositTransaction = async (
   if (!paystackResponse.status || paystackResponse.data.status !== 'success') {
     console.error('Paystack verification error:', paystackResponse);
     throw new BadUserRequestError(
-      'Deposit transaction failed due to unsuccessful verification with Paystack. Please try again.'
+      'Deposit transaction failed due to unsuccessful verification with Paystack. Please try again.',
     );
   }
 
@@ -87,18 +64,14 @@ export const updateDepositTransaction = async (
    */
 
   if (existingTxn.status !== 'pending') {
-    throw new BadUserRequestError(
-      'This transaction has already been confirmed'
-    );
+    throw new BadUserRequestError('This transaction has already been confirmed');
   }
   /**
    * Process Transaction: If the status is valid, the system updates the transaction status and deposits the amount into the user's account using database increments.
    */
 
-  if(existingTxn.amount != (paystackResponse.data.amount/100)){
-    throw new BadUserRequestError(
-      'Paystack amount should be equal to db amount'
-    );
+  if (existingTxn.amount != paystackResponse.data.amount / 100) {
+    throw new BadUserRequestError('Paystack amount should be equal to db amount');
   }
 
   // Update the transaction details status to completed

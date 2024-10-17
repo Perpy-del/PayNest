@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config({ path: '../../.env' })
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
@@ -20,6 +20,6 @@ const config = {
   migrations: {
     tableName: 'knex_migrations',
   },
-};
+}
 
-export default config;
+export default config

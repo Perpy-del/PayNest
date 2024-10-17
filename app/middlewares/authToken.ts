@@ -1,9 +1,7 @@
 import { addSeconds, getTime } from 'date-fns';
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { TokenPayload } from '../interfaces/auth.interface';
-import env from '../../config/env.ts';
-dotenv.config();
+import env from '../../config/env';
 
 export const jwtAuthToken = (details: TokenPayload) => {
   const expiryDate = addSeconds(new Date(), Number(env.jwt_expiration));
