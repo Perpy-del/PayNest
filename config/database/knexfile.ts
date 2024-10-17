@@ -6,8 +6,6 @@ dotenv.config({ path: '../../.env' })
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 
-console.log(process.env.DB_CONNECTION_STRING)
-
 const config: any = {
   client: process.env.DB_CLIENT,
   connection: {
